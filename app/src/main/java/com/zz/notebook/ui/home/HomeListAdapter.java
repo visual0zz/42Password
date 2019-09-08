@@ -33,7 +33,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.VH>{
     @Override
     public void onBindViewHolder(VH holder, int position) {
         holder.button.setText("这是第"+position+"项");
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(holder.itemView.getContext(),"点击了第"+position+"个按钮",Toast.LENGTH_LONG).show();
