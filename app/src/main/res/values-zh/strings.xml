@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">记录本</string>
+    <string name="menu_gallery">收集</string>
+    <string name="menu_home">主页</string>
+    <string name="menu_send">发送</string>
+    <string name="menu_share">分享</string>
+    <string name="menu_slideshow">滑动</string>
+    <string name="menu_tools">工具</string>
+    <string name="nav_header_desc">导航栏</string>
+    <string name="action_settings">设置</string>
+</resources>

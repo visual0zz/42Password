@@ -14,6 +14,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.zz.notebook.R;
 
+import java.util.logging.Logger;
+import java.util.logging.LoggingMXBean;
+
 public class SendFragment extends Fragment {
 
     private SendViewModel sendViewModel;
