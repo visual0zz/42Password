@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.bf.offline.MainActivity">
-    <item android:title="delete" app:showAsAction="always"/>
+    <item android:title="delete" android:visible="false"/>
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search_black_24dp"

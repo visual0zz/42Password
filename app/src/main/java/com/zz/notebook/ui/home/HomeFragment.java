@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.zz.notebook.MainActivity;
 import com.zz.notebook.R;
+import com.zz.notebook.dao.Database;
 
 
 public class HomeFragment extends Fragment {
