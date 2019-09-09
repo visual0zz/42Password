@@ -4,12 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.zz.notebook.MainActivity;
 import com.zz.notebook.R;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -33,8 +27,7 @@ public class HomeFragment extends Fragment {
 
         RecyclerView recyclerView = root.findViewById(R.id.note_list_view);//加载主列表
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));//设置列表为线性布局
-        recyclerView.setAdapter(new HomeListAdapter());
-        homeViewModel.getText().observe(this, (s)->{});
+        recyclerView.setAdapter(new HomeListAdapter(homeViewModel));
 
         activity= (MainActivity) getActivity();
 
@@ -49,6 +42,7 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         activity.showSearchButton(false);//隐藏搜索按钮
         activity.searchActionProvider=null;//当本页面隐藏时消除搜索事件
+        homeViewModel.setListAdapter(null);//清除无效的引用，防止更新已经不存在的view
         super.onDestroyView();
     }
 }

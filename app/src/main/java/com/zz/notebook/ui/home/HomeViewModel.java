@@ -1,21 +1,23 @@
 package com.zz.notebook.ui.home;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+import com.zz.notebook.dao.PasswordNote;
 
-    private MutableLiveData<String> mText;
+public class HomeViewModel extends ViewModel {
+    private HomeListAdapter listAdapter;
+    public void setListAdapter(HomeListAdapter adapter){listAdapter=adapter;}
     public void doSearch(String str){
 
     }
-    public HomeViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+    @NonNull
+    public PasswordNote getAt(int index){
+        return null;
     }
-
-    public LiveData<String> getText() {
-        return mText;
+    public int count(){
+        return 43;
     }
 }

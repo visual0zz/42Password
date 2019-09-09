@@ -23,6 +23,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 import com.zz.notebook.ui.home.SearchActionProvider;
+import com.zz.notebook.util.BasicService;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        BasicService.rootContext=getApplicationContext();//将context缓存用于产生Toast消息
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
