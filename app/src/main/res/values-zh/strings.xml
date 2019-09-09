@@ -9,4 +9,7 @@
     <string name="menu_tools">工具</string>
     <string name="nav_header_desc">导航栏</string>
     <string name="action_settings">设置</string>
+    <string name="action_search">搜索</string>
+    <string name="navigation_drawer_close">关闭导航绘制</string>
+    <string name="navigation_drawer_open">开启导航绘制</string>
 </resources>
