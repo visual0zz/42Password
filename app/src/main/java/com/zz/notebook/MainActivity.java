@@ -1,21 +1,21 @@
 package com.zz.notebook;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-
-import android.view.ActionMode;
-import android.view.MenuInflater;
+import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.SearchEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
+import androidx.annotation.Nullable;
+import androidx.core.view.ActionProvider;
+import androidx.core.view.MenuItemCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.ActionMenuView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -67,6 +68,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {//加载菜单 菜单内容只有一个 “搜索”
         getMenuInflater().inflate(R.menu.main, menu);
+        searchButton=menu.findItem(R.id.action_search);//得到菜单中 "搜索" 那一项
+
+        View searchView=searchButton.getActionView();//得到对应的搜索栏视图对象
+        searchView.setOnClickListener((view) -> {
+            Toast.makeText(getBaseContext(),"点击="+view.getId(),Toast.LENGTH_LONG).show();
+            return;
+        });
         return true;
     }
 
@@ -77,31 +85,6 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
-    ActionMode.Callback searchMode=new ActionMode.Callback() {//标题栏进入搜索状态时的消息处理器
-        @Override
-        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            MenuInflater inflater = actionMode.getMenuInflater();
-            inflater.inflate(R.menu.test,menu);
-            return true;
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-            Toast.makeText(getBaseContext(),menuItem.getTitle(),Toast.LENGTH_LONG).show();
-            return true;
-        }
-        @Override
-        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-            return true;
-        }
-        @SuppressLint("NewApi")
-        @Override
-        public void onDestroyActionMode(ActionMode actionMode) {
-            Toast.makeText(getBaseContext(),"版本="+this,Toast.LENGTH_LONG).show();
-                actionMode.hide(ActionMode.TYPE_PRIMARY);
-            getSupportActionBar().show();
-        }
-    };
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -109,12 +92,17 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.action_search://点击搜索按钮
                 Toast.makeText(getBaseContext(),"搜索="+this,Toast.LENGTH_LONG).show();
-                ActionBar actionBar=getSupportActionBar();
-
-                this.startActionMode(searchMode);
-                actionBar.hide();
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSearchRequested(@Nullable SearchEvent searchEvent) {
+        return super.onSearchRequested(searchEvent);
+    }
+    private MenuItem searchButton;
+    public void showSearchButton(boolean show){
+        if(searchButton!=null)searchButton.setVisible(show);
     }
 }
