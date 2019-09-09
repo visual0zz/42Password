@@ -22,6 +22,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.zz.notebook.ui.home.SearchActionProvider;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -32,6 +33,9 @@ import android.view.Menu;
 import android.widget.ActionMenuView;
 import android.widget.SearchView;
 import android.widget.Toast;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,17 +68,35 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
     }
-
+    Logger logger=Logger.getLogger(this.getClass().getName());
+    public SearchActionProvider searchActionProvider=null;//搜索服务可以注册到这个变量里
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {//加载菜单 菜单内容只有一个 “搜索”
         getMenuInflater().inflate(R.menu.main, menu);
         searchButton=menu.findItem(R.id.action_search);//得到菜单中 "搜索" 那一项
+        SearchView searchView=(SearchView) searchButton.getActionView();//得到对应的搜索栏视图对象
 
-        View searchView=searchButton.getActionView();//得到对应的搜索栏视图对象
-        searchView.setOnClickListener((view) -> {
-            Toast.makeText(getBaseContext(),"点击="+view.getId(),Toast.LENGTH_LONG).show();
-            return;
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                logger.info("搜索栏提交了字符串="+s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {//当搜索栏变化时执行搜索操作
+                logger.info("搜索栏修改了字符串="+s);
+                if(searchActionProvider!=null)searchActionProvider.doSearch(s);
+                return false;
+            }
         });
+        searchView.setOnCloseListener(() -> {
+            logger.info("搜索栏关闭了");
+            if(searchActionProvider!=null)searchActionProvider.doSearch(null);//null表示不进行搜索，显示所有东西
+            return false;
+        });
+        logger.log(Level.INFO,"添加了搜索按钮");
+        if(searchActionProvider!=null)searchActionProvider.doSearch(null);//null表示不进行搜索，显示所有东西
         return true;
     }
 

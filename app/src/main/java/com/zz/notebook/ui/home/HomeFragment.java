@@ -37,13 +37,18 @@ public class HomeFragment extends Fragment {
         homeViewModel.getText().observe(this, (s)->{});
 
         activity= (MainActivity) getActivity();
+
         activity.showSearchButton(true);//显示搜索按钮
+        activity.searchActionProvider= str -> {//发生搜索事件时
+            homeViewModel.doSearch(str);//调用数据层进行搜索
+        };
         return root;
     }
 
     @Override
     public void onDestroyView() {
         activity.showSearchButton(false);//隐藏搜索按钮
+        activity.searchActionProvider=null;//当本页面隐藏时消除搜索事件
         super.onDestroyView();
     }
 }
