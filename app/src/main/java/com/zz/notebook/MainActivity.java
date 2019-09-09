@@ -1,12 +1,21 @@
 package com.zz.notebook;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+
+import android.view.ActionMode;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -20,6 +29,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {//悬空的 "+" 按钮
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -54,8 +65,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+    public boolean onCreateOptionsMenu(Menu menu) {//加载菜单 菜单内容只有一个 “搜索”
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -65,5 +75,46 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    ActionMode.Callback searchMode=new ActionMode.Callback() {//标题栏进入搜索状态时的消息处理器
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            MenuInflater inflater = actionMode.getMenuInflater();
+            inflater.inflate(R.menu.test,menu);
+            return true;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            Toast.makeText(getBaseContext(),menuItem.getTitle(),Toast.LENGTH_LONG).show();
+            return true;
+        }
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return true;
+        }
+        @SuppressLint("NewApi")
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            Toast.makeText(getBaseContext(),"版本="+this,Toast.LENGTH_LONG).show();
+                actionMode.hide(ActionMode.TYPE_PRIMARY);
+            getSupportActionBar().show();
+        }
+    };
+
+    @SuppressLint("RestrictedApi")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {//处理点击搜索按钮的消息
+        switch (item.getItemId()){
+            case R.id.action_search://点击搜索按钮
+                Toast.makeText(getBaseContext(),"搜索="+this,Toast.LENGTH_LONG).show();
+                ActionBar actionBar=getSupportActionBar();
+
+                this.startActionMode(searchMode);
+                actionBar.hide();
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
