@@ -16,6 +16,7 @@ public final class BasicService {
         try{
             if(isWorkable()){
                 Toast.makeText(rootContext,str,Toast.LENGTH_LONG).show();
+                logger.info("产生toast消息成功,原文为:\""+str+"\"");
                 return;
             }
         }catch (RuntimeException e){
@@ -74,7 +75,9 @@ public final class BasicService {
         R.drawable.avata49,
     };//用于暂存所有的头像id
 
-    public static Drawable getAvatar(int index){
+    public static Drawable getAvatar(String str){
+        int index=str.hashCode();
+        if(index<0)index=index+Integer.MAX_VALUE;
         logger.info("正在尝试获得avatar["+index+"]");
         try{
             if(isWorkable()){
@@ -84,6 +87,9 @@ public final class BasicService {
             logger.warning("读取avatar失败,e="+e);
         }
         logger.warning("读取avatar失败,rootContext="+rootContext);
+        return null;
+    }
+    private static Drawable getSpecialAvatar(String str){//用于为知名站点添加特殊的头像，比如百度，bilibili
         return null;
     }
     private static boolean isWorkable(){//用于验证自身工作需要的数据有没有到位

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">42密码本</string>
-    <string name="menu_gallery">收集</string>
+    <string name="menu_test">测试</string>
     <string name="menu_home">主页</string>
     <string name="menu_send">发送</string>
     <string name="menu_share">分享</string>

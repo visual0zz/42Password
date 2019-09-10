@@ -110,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @SuppressLint("RestrictedApi")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {//处理点击搜索按钮的消息
         switch (item.getItemId()){

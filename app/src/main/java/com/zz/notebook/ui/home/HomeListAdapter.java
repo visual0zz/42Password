@@ -5,16 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zz.notebook.R;
-import com.zz.notebook.dao.PasswordNote;
+import com.zz.notebook.dao.AccountItem;
 import com.zz.notebook.util.BasicService;
-
-import java.security.InvalidParameterException;
-import java.util.logging.Logger;
 
 import static com.zz.notebook.util.BasicService.toast;
 
@@ -43,10 +39,10 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.VH>{
 
     @Override
     public void onBindViewHolder(VH holder, int position) {
-        PasswordNote note=dataModel.getAt(position);
+        AccountItem note=dataModel.getAt(position);
         holder.app_name.setText("这是第"+position+"项");
         holder.account.setText(position+"@"+position+".com");
-        holder.avatar.setImageDrawable(BasicService.getAvatar(position));
+        holder.avatar.setImageDrawable(BasicService.getAvatar("item"+position));
         holder.time.setText(position+":"+position+":"+position);
         holder.itemView.setOnClickListener(v ->toast("点击了第"+position+"个按钮"));
     }

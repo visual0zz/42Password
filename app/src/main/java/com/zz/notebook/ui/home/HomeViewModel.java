@@ -1,11 +1,9 @@
 package com.zz.notebook.ui.home;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.zz.notebook.dao.PasswordNote;
+import com.zz.notebook.dao.AccountItem;
 
 public class HomeViewModel extends ViewModel {
     private HomeListAdapter listAdapter;
@@ -14,7 +12,7 @@ public class HomeViewModel extends ViewModel {
 
     }
     @NonNull
-    public PasswordNote getAt(int index){
+    public AccountItem getAt(int index){
         return null;
     }
     public int count(){
