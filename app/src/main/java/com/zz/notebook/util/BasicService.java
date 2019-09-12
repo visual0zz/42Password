@@ -9,7 +9,13 @@ import com.zz.notebook.R;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * @method void toast(String string) 显示toast消息
+ * @method Drawable getAvatar(String seed) 得到随机的图标
+ */
 public final class BasicService {
+    public final static String global_serialVersionUID="1.0";
+    public final static String global_encrypt_algorithm ="AES/ECB/PKCS5Padding";
     public static Context rootContext;
     private static Logger logger=Logger.getLogger(BasicService.class.getName());
     public static void toast(String str){

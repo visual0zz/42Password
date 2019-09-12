@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zz.notebook.R;
-import com.zz.notebook.dao.AccountItem;
+import com.zz.notebook.model.AccountItem;
 import com.zz.notebook.util.BasicService;
 
 import static com.zz.notebook.util.BasicService.toast;
