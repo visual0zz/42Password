@@ -3,7 +3,7 @@ package com.zz.notebook.ui.home;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 
-import com.zz.notebook.model.AccountItem;
+import com.zz.notebook.ciper.AccountItem;
 
 public class HomeViewModel extends ViewModel {
     private HomeListAdapter listAdapter;

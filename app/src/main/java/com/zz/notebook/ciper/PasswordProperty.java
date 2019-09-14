@@ -1,4 +1,4 @@
-package com.zz.notebook.model;
+package com.zz.notebook.ciper;
 
 import androidx.annotation.NonNull;
 
@@ -22,6 +22,6 @@ public class PasswordProperty<T extends Serializable> implements Serializable {/
     @NonNull
     @Override
     public String toString() {
-        return ByteArrayUtils.bytesToString(data);
+        return ByteArrayUtils.bytesToHex(data);
     }
 }

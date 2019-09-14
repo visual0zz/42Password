@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.security.InvalidParameterException;
+import java.security.Key;
+import java.util.UUID;
 
 public class ByteArrayUtils {
 
@@ -40,10 +42,10 @@ public class ByteArrayUtils {
         long target=(res[0]&0xffL)|((res[1]<<8)&0xff00L)
                 |((res[2]<<16)&0xff0000L)
                 |((res[3]<<24)&0xff000000L)
-                |((res[4]<<32)&0xff00000000L)
-                |((res[5]<<40)&0xff0000000000L)
-                |((res[6]<<48)&0xff000000000000L)
-                |((res[7]<<56)&0xff00000000000000L)
+                |(((long)res[4]<<32)&0xff00000000L)
+                |(((long)res[5]<<40)&0xff0000000000L)
+                |(((long)res[6]<<48)&0xff000000000000L)
+                |(((long)res[7]<<56)&0xff00000000000000L)
                 ;
         return target;
     }
@@ -109,8 +111,8 @@ public class ByteArrayUtils {
         }
         return true;
     }
-    private static String[] bytecode={"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"};
-    public static String bytesToString(byte[] in){
+    private static final String[] bytecode={"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"};
+    public static String bytesToHex(byte[] in){
         if(in==null||in.length==0)return "";
         StringBuilder builder=new StringBuilder();
         for(byte b:in){
@@ -120,5 +122,16 @@ public class ByteArrayUtils {
             builder.append(bytecode[low]);
         }
         return builder.toString();
+    }
+
+    public static byte[] uuidToBytes(UUID uid){
+        return concat(long2byte(uid.getLeastSignificantBits()),long2byte(uid.getMostSignificantBits()));
+    }
+    public static UUID bytesToUUID(byte[] in){
+        if(in.length!=16)throw new InvalidParameterException("这个字节数组不是一个UUID");
+        byte[] b=new byte[8];
+        for(int i=0;i<8;i++)b[i]=in[i+8];
+        UUID uuid=new UUID(byte2long(b),byte2long(in));
+        return uuid;
     }
 }

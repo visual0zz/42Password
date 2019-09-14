@@ -1,21 +1,19 @@
-package com.zz.notebook.model;
+package com.zz.notebook.ciper;
 
 
-import com.zz.notebook.ciper.KeyProvider;
+import androidx.annotation.NonNull;
+
 import com.zz.notebook.util.BasicService;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
@@ -24,9 +22,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import static com.zz.notebook.util.BasicService.global_encrypt_algorithm;
-import static com.zz.notebook.util.ByteArrayUtils.bytesToString;
 import static java.lang.System.exit;
-import static java.lang.System.in;
 
 /**
  * 为了适配keepass的csv输出格式 属性定义为:"Group","Title","Username","Password","URL","Notes"
@@ -95,7 +91,7 @@ public class AccountItem implements Serializable {//表示一条帐号记录
             Cipher cipher = Cipher.getInstance(global_encrypt_algorithm);//默认ECB模式
             cipher.init(Cipher.DECRYPT_MODE, key);// 初始化
             ObjectInputStream inputStream=new ObjectInputStream(new ByteArrayInputStream(cipher.doFinal(data)));//将数据解密
-            set((AccountItem) inputStream.readObject());//将数据写入自己
+            assign((AccountItem) inputStream.readObject());//将数据写入自己
             if(!this.uid.equals(uid))throw new InvalidKeyException("解密出的uid不一致，密码错误或者解码错了对象");
         } catch ( NoSuchAlgorithmException|NoSuchPaddingException| BadPaddingException| IllegalBlockSizeException|IOException e) {
             e.printStackTrace();
@@ -120,13 +116,46 @@ public class AccountItem implements Serializable {//表示一条帐号记录
         }
         return null;
     }
-    public void set(AccountItem in){
+
+
+    //    UUID uid;
+    //    String group;
+    //    String title;
+    //    String username;
+    //    String url;
+    //    String notes;
+    //    PasswordProperty password;
+
+    /**
+     * 将另一个账户条目赋值到本对象，复制所有成员
+     * @param in 源对象
+     */
+    public void assign(AccountItem in){
         uid=in.uid;
+        group=in.group;
         title=in.title;
         username=in.username;
         url=in.url;
         notes=in.notes;
         password=in.password;
     }
+
+    /**
+     * 构造一个新的账户条目对象，复制原对象成员，但有新的UUID
+     * @param old 旧的对象
+     */
+    public AccountItem(AccountItem old){
+        this.assign(old);
+        this.uid=UUID.randomUUID();
+    }
+
+    //"Group","Title","Username","Password","URL","Notes"
+    @NonNull
+    @Override
+    public String toString() {
+        return "{uid="+uid+"\tgroup="+group+"\ttitle="+title+"\tusername="+username+"\tpassword="+password+"\turl="+url+"\tnotes="+notes+"}";
+    }
+
+
 }
 

@@ -87,7 +87,11 @@ public final class BasicService {
         logger.info("正在尝试获得avatar["+index+"]");
         try{
             if(isWorkable()){
-                return rootContext.getResources().getDrawable(avatars[index%avatars.length]);
+                Drawable tmp=getSpecialAvatar(str);
+                if(tmp!=null)
+                    return tmp;
+                else
+                    return rootContext.getResources().getDrawable(avatars[index%avatars.length]);
             }
         }catch (RuntimeException e){
             logger.warning("读取avatar失败,e="+e);
