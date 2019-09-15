@@ -85,10 +85,19 @@ public class AccountItem implements Serializable {//表示一条帐号记录
         group=title=url=username=notes="";
         password=new PasswordProperty();
     }
+
+    /**
+     * 读取密文并解密填入自身
+     * @param uid 本账户条目的uuid
+     * @param keyProvider 提供解密密钥的密钥工厂
+     * @param data 密文数据
+     * @throws InvalidKeyException 密钥工厂提供的密钥无法解密密文，
+     * @throws ClassNotFoundException 解密出的明文中读取不出格式正确的数据
+     */
     public void setAndDecryptData(UUID uid,KeyProvider keyProvider,byte[] data) throws InvalidKeyException, ClassNotFoundException {//从密文解密构造帐号记录
         try {
             Key key=keyProvider.forAccount(uid);
-            Cipher cipher = Cipher.getInstance(global_encrypt_algorithm);//默认ECB模式
+            Cipher cipher = Cipher.getInstance(global_encrypt_algorithm);
             cipher.init(Cipher.DECRYPT_MODE, key);// 初始化
             ObjectInputStream inputStream=new ObjectInputStream(new ByteArrayInputStream(cipher.doFinal(data)));//将数据解密
             assign((AccountItem) inputStream.readObject());//将数据写入自己
@@ -99,6 +108,11 @@ public class AccountItem implements Serializable {//表示一条帐号记录
         }
     }
 
+    /**
+     * 将本账户条目加密得到密文
+     * @param keyProvider 提供加密密钥的密钥工厂
+     * @return 加密得到的密文
+     */
     public byte[] getEncryptedData(KeyProvider keyProvider){//得到密文
         try {
             Key key=keyProvider.forAccount(uid);
@@ -106,7 +120,7 @@ public class AccountItem implements Serializable {//表示一条帐号记录
             ObjectOutputStream objectOutputStream=new ObjectOutputStream(arrayStream);
             objectOutputStream.writeObject(this);//将自己写入字节数组流
 
-            Cipher cipher = Cipher.getInstance(global_encrypt_algorithm);//默认ECB模式
+            Cipher cipher = Cipher.getInstance(global_encrypt_algorithm);
             cipher.init(Cipher.ENCRYPT_MODE, key);// 初始化
             return cipher.doFinal(arrayStream.toByteArray());//返回加密结果
 

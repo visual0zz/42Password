@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 
+@Deprecated
 public class DataPool{//用于存储明文和密文,用于完成数据分块 混合 填充等操作
 
     public void put(byte in){//放入一个

@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  */
 public final class BasicService {
     public final static String global_serialVersionUID="1.0";
-    public final static String global_encrypt_algorithm ="AES/ECB/PKCS5Padding";
+    public final static String global_encrypt_algorithm ="AES/CBC/PKCS5Padding";
     public static Context rootContext;
     private static Logger logger=Logger.getLogger(BasicService.class.getName());
     public static void toast(String str){

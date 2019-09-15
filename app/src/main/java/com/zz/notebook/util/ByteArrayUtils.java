@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.security.InvalidParameterException;
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class ByteArrayUtils {
@@ -111,7 +112,7 @@ public class ByteArrayUtils {
         }
         return true;
     }
-    private static final String[] bytecode={"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"};
+    private static final char[] bytecode={'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
     public static String bytesToHex(byte[] in){
         if(in==null||in.length==0)return "";
         StringBuilder builder=new StringBuilder();
@@ -122,6 +123,36 @@ public class ByteArrayUtils {
             builder.append(bytecode[low]);
         }
         return builder.toString();
+    }
+    public static byte[] hexToBytes(String in){
+        in=in.trim().toUpperCase();
+        char[] data=in.toCharArray();
+        byte[] result=new byte[data.length/2];
+        if(data.length%2!=0)throw new IllegalArgumentException("字符串格式不正确，不能转化为byte[]");
+        for(int j=0;2*j<data.length;j++){
+            result[j]=(hexToBytes(data[2*j],data[2*j+1]));
+        }
+        return result; 
+    }
+    private static byte hexToBytes(char h,char l){
+        byte high=0,low=0;
+        for(int i=0;i<=bytecode.length;i++){
+            if(i==bytecode.length){
+                throw new IllegalArgumentException("字符串格式不正确，不能转化为byte[]");
+            }else if(bytecode[i]==h){
+                high= (byte) i;
+                break;
+            }
+        }
+        for(int i=0;i<=bytecode.length;i++){
+            if(i==bytecode.length){
+                throw new IllegalArgumentException("字符串格式不正确，不能转化为byte[]");
+            }else if(bytecode[i]==l){
+                low= (byte) i;
+                break;
+            }
+        }
+        return (byte) (high<<4|low);
     }
 
     public static byte[] uuidToBytes(UUID uid){

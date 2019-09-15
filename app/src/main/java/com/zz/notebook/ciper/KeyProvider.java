@@ -1,19 +1,10 @@
 package com.zz.notebook.ciper;
 
-import com.zz.notebook.util.ByteArrayUtils;
-
 import java.io.UnsupportedEncodingException;
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.UUID;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
-import static com.zz.notebook.util.BasicService.global_encrypt_algorithm;
+import static com.zz.notebook.ciper.CipherService.aesKeyFromSeed;
 import static com.zz.notebook.util.ByteArrayUtils.concat;
 import static java.lang.System.exit;
 
@@ -21,21 +12,19 @@ import static java.lang.System.exit;
  * 用于生成不同对象的不同加密密钥的密钥生成器，根据全局密钥设定，生成具体的加密密钥
  */
 public class KeyProvider{
-    byte[] userkey_hash;
+    byte[] masterkey_hash;
     byte[] randomkey;
-    public KeyProvider(byte[] userkey_hash,byte[] randomkey){this.randomkey=randomkey;this.userkey_hash=userkey_hash;}
+    public KeyProvider(byte[] masterkey_hash, byte[] randomkey){this.randomkey=randomkey;this.masterkey_hash = masterkey_hash;}
     public Key forAccount(UUID uuid){//对应每一条账户信息的加密密钥
         try {
             byte[] uid_bytes=uuid.toString().getBytes("utf-8");
-            byte[] accountkey= concat(concat(randomkey,userkey_hash),uid_bytes);
-
-            KeyGenerator kgen = KeyGenerator.getInstance("AES");
-            kgen.init(128, new SecureRandom(accountkey));
-            return kgen.generateKey();
-        } catch (Exception e) {
+            byte[] accountkey= concat(concat(randomkey, masterkey_hash),uid_bytes);
+            return aesKeyFromSeed(accountkey);
+        }catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             exit(1);
         }
         return null;
     }
+
 }

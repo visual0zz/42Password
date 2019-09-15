@@ -67,5 +67,7 @@ public class TestFragment extends Fragment {
             }
         }else {logger.warning("android版本过低");}
     }
+    void test2(){
+    }
 
 }
