@@ -15,12 +15,12 @@ public class DatabaseTest {
     @Test
     public void testDatabase() throws Database.DatabaseException {
         Database database=new Database(new File(database_test_file),"123456".getBytes());
-        //new Database(new File(database_test_file),"123456".getBytes());
+        new Database(new File(database_test_file),"123456".getBytes());
 
     }
     @After
     public void after(){
-        //new File(database_test_file).delete();
+        new File(database_test_file).delete();
     }
 
 }
