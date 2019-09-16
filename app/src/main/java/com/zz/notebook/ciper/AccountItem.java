@@ -13,7 +13,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
@@ -90,19 +89,19 @@ public class AccountItem implements Serializable {//表示一条帐号记录
     /**
      * 读取密文并解密填入自身
      * @param uid 本账户条目的uuid
-     * @param keyProvider 提供解密密钥的密钥工厂
+     * @param cipherProvider 提供解密密钥的密钥工厂
      * @param data 密文数据
      * @throws InvalidKeyException 密钥工厂提供的密钥无法解密密文，
      * @throws ClassNotFoundException 解密出的明文中读取不出格式正确的数据
      */
-    public void setAndDecryptData(UUID uid,KeyProvider keyProvider,byte[] data) throws InvalidKeyException, ClassNotFoundException {//从密文解密构造帐号记录
+    public void setAndDecryptData(UUID uid, CipherProvider cipherProvider, byte[] data) throws InvalidKeyException, ClassNotFoundException {//从密文解密构造帐号记录
         try {
-            Cipher cipher = Cipher.getInstance(global_encrypt_algorithm);
-            cipher.init(Cipher.DECRYPT_MODE, keyProvider.forAccount(uid),keyProvider.getIv(uid));// 初始化
-            ObjectInputStream inputStream=new ObjectInputStream(new ByteArrayInputStream(cipher.doFinal(data)));//将数据解密
+            Cipher cipher = cipherProvider.getCipherForAccount(uid,Cipher.DECRYPT_MODE);// 初始化
+            byte[] decrypted_data=cipher.doFinal(data);
+            ObjectInputStream inputStream=new ObjectInputStream(new ByteArrayInputStream(decrypted_data));//将数据解密
             assign((AccountItem) inputStream.readObject());//将数据写入自己
             if(!this.uid.equals(uid))throw new InvalidKeyException("解密出的uid不一致，密码错误或者解码错了对象");
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException | IOException | InvalidAlgorithmParameterException e) {
+        } catch (BadPaddingException | IllegalBlockSizeException | IOException e) {
             e.printStackTrace();
             exit(1);
         }
@@ -110,17 +109,16 @@ public class AccountItem implements Serializable {//表示一条帐号记录
 
     /**
      * 将本账户条目加密得到密文
-     * @param keyProvider 提供加密密钥的密钥工厂
+     * @param cipherProvider 提供加密密钥的密钥工厂
      * @return 加密得到的密文
      */
-    public byte[] getEncryptedData(KeyProvider keyProvider){//得到密文
+    public byte[] getEncryptedData(CipherProvider cipherProvider){//得到密文
         try {
             ByteArrayOutputStream arrayStream=new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream=new ObjectOutputStream(arrayStream);
             objectOutputStream.writeObject(this);//将自己写入字节数组流
 
-            Cipher cipher = Cipher.getInstance(global_encrypt_algorithm);
-            cipher.init(Cipher.ENCRYPT_MODE,keyProvider.forAccount(uid),keyProvider.getIv(uid));// 初始化
+            Cipher cipher = cipherProvider.getCipherForAccount(uid,Cipher.ENCRYPT_MODE);// 初始化
             return cipher.doFinal(arrayStream.toByteArray());//返回加密结果
 
         } catch ( Exception e) {

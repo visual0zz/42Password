@@ -1,22 +1,14 @@
 package com.zz.notebook.data;
 
 import com.zz.notebook.ciper.AccountItem;
-import com.zz.notebook.ciper.KeyProvider;
+import com.zz.notebook.ciper.CipherProvider;
 import com.zz.notebook.util.ByteArrayUtils;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.UUID;
 
-import javax.crypto.Cipher;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
-
-import static com.zz.notebook.util.BasicService.global_encrypt_algorithm;
 import static com.zz.notebook.util.ByteArrayUtils.bytesToUUID;
 import static com.zz.notebook.util.ByteArrayUtils.uuidToBytes;
 
@@ -26,7 +18,7 @@ public class AccountItemTest {
         String note="123asdf!@#";
         AccountItem accountItem1=new AccountItem();
         accountItem1.setNotes(note);
-        KeyProvider provider=new KeyProvider("123".getBytes(),"4564".getBytes());
+        CipherProvider provider=new CipherProvider("123".getBytes(),"4564".getBytes());
         byte[] encryptedData=accountItem1.getEncryptedData(provider);
         System.out.println("加密的结果="+ ByteArrayUtils.bytesToHex(encryptedData));
 
