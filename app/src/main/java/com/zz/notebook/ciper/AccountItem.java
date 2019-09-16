@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Timestamp;
 import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
@@ -37,6 +38,7 @@ public class AccountItem implements Serializable {//表示一条帐号记录
     String url;
     String notes;
     PasswordProperty password;
+    long timestamp;
 
 
     public AccountItem setGroup(String group) {
@@ -67,7 +69,13 @@ public class AccountItem implements Serializable {//表示一条帐号记录
         this.uid=uid;
         return this;
     }
+    public long getTimestamp() {
+        return timestamp;
+    }
 
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public String getGroup() { return group; }
     public String getTitle() { return title; }
@@ -84,6 +92,7 @@ public class AccountItem implements Serializable {//表示一条帐号记录
         uid=UUID.randomUUID();
         group=title=url=username=notes="";
         password=new PasswordProperty();
+        timestamp=System.currentTimeMillis();//获得当前时间记录为时间戳
     }
 
     /**
@@ -148,6 +157,7 @@ public class AccountItem implements Serializable {//表示一条帐号记录
         url=in.url;
         notes=in.notes;
         password=in.password;
+        timestamp=in.timestamp;
     }
 
     /**
@@ -158,6 +168,7 @@ public class AccountItem implements Serializable {//表示一条帐号记录
         this.assign(old);
         this.uid=UUID.randomUUID();
     }
+
 
     //"Group","Title","Username","Password","URL","Notes"
     @NonNull

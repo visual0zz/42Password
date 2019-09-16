@@ -58,7 +58,7 @@ public class Database {
                 readDataFromFile(masterkey);
             else{
                 initNewDatabase(masterkey,true);
-                saveDataToFile(masterkey);
+                saveDataToFile(hash(salt,masterkey));
             }
         } catch (NoSuchPaddingException | NoSuchAlgorithmException | ParserConfigurationException | TransformerException | BadPaddingException | IllegalBlockSizeException e) {
             e.printStackTrace();
@@ -71,6 +71,7 @@ public class Database {
 
     /**
      * 负责读取数据库文件数据到内存中
+     * @param masterkey 用户的主密码
      * @throws ParserConfigurationException 解析xml文件失败
      * @throws IOException ..
      * @throws SAXException ..
@@ -146,7 +147,7 @@ public class Database {
 
     /**
      * 负责新建空的数据库文件
-     * @param masterkey 用于加密数据库的主密码
+     * @param masterkey_hash 用于加密数据库的主密码的加盐哈希值
      * @throws ParserConfigurationException
      * @throws TransformerException
      * @throws NoSuchPaddingException
@@ -155,7 +156,7 @@ public class Database {
      * @throws BadPaddingException
      * @throws IllegalBlockSizeException
      */
-    private void saveDataToFile(byte[] masterkey) throws ParserConfigurationException, TransformerException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    private void saveDataToFile(byte[] masterkey_hash) throws ParserConfigurationException, TransformerException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         Document document=DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         document.setXmlStandalone(true);
         //////////////////////////////////////////////////////////////////////////
@@ -166,7 +167,7 @@ public class Database {
 //        System.out.println("salt="+bytesToHex(salt));
 //        System.out.println("randomkey="+bytesToHex(cipherProvider.randomkey));
 //        System.out.println("hash_masterkey="+bytesToHex(hash(salt,masterkey)));
-        byte[] master_data=concat(concat(salt,cipherProvider.randomkey),hash(salt,masterkey));
+        byte[] master_data=concat(concat(salt,cipherProvider.randomkey),masterkey_hash);
 
 //        System.out.println("加密前master_data="+bytesToHex(master_data));//todo delete
         Cipher cipher=cipherProvider.getCipherMaster(Cipher.ENCRYPT_MODE);
@@ -224,4 +225,22 @@ public class Database {
     public static class UnfixableDatabaseException extends RuntimeException{
         public UnfixableDatabaseException(String message){super(message);}
     }
+
+    public int size(){return data.size();}
+    public List<UUID> getUUIDs(){
+        ArrayList<UUID> result=new ArrayList<>();
+        for(AccountItem item:data){
+            result.add(item.getUid());
+        }
+        return result;
+    }
+    public List<AccountItem> getData(){return data;}
+    public AccountItem getAccountItem(UUID uuid){
+        for(AccountItem item:data){
+            if(item.getUid().equals(uuid))
+                return item;
+        }
+        return null;
+    }
+    public AccountItem getAccountItem(int index){return data.get(index);}
 }
