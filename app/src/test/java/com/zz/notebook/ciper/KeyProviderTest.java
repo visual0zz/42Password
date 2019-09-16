@@ -20,12 +20,32 @@ public class KeyProviderTest {
     }
 
     @Test
-    public void forAccount() {
-        UUID a=UUID.randomUUID();
+    public void testforAccount() {
+        UUID uuid1=UUID.randomUUID();
+        UUID uuid2=new UUID(uuid1.getMostSignificantBits(),uuid1.getLeastSignificantBits());
+        System.out.println(uuid1);
+        System.out.println(uuid2);
         KeyProvider provider=new KeyProvider("sdaf".getBytes(),"asfdsadf".getBytes());
-        System.out.println(bytesToHex(provider.forAccount(a).getEncoded()));
-        System.out.println(bytesToHex(provider.forAccount(a).getEncoded()));
-        Assert.assertEquals(provider.forAccount(a),provider.forAccount(a));
-        Assert.assertNotEquals(provider.forAccount(a),provider.forAccount(UUID.randomUUID()));
+        String a=bytesToHex(provider.forAccount(uuid1).getEncoded());
+        String b=bytesToHex(provider.forAccount(uuid2).getEncoded());
+        System.out.println(a);
+        System.out.println(b);
+        Assert.assertEquals(a,b);
+        Assert.assertNotEquals(a,bytesToHex(provider.forAccount(UUID.randomUUID()).getEncoded()));
+    }
+    @Test
+    public void testIvParameterSpec(){
+
+        UUID uuid1=UUID.randomUUID();
+        UUID uuid2=new UUID(uuid1.getMostSignificantBits(),uuid1.getLeastSignificantBits());
+        System.out.println(uuid1);
+        System.out.println(uuid2);
+        KeyProvider provider=new KeyProvider("sdaf".getBytes(),"asfdsadf".getBytes());
+        String a=bytesToHex(provider.getIv(uuid1).getIV());
+        String b=bytesToHex(provider.getIv(uuid2).getIV());
+        System.out.println(a);
+        System.out.println(b);
+        Assert.assertEquals(a,b);
+        Assert.assertNotEquals(a,bytesToHex(provider.getIv(UUID.randomUUID()).getIV()));
     }
 }

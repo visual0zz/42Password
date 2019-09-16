@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -96,13 +97,12 @@ public class AccountItem implements Serializable {//表示一条帐号记录
      */
     public void setAndDecryptData(UUID uid,KeyProvider keyProvider,byte[] data) throws InvalidKeyException, ClassNotFoundException {//从密文解密构造帐号记录
         try {
-            Key key=keyProvider.forAccount(uid);
             Cipher cipher = Cipher.getInstance(global_encrypt_algorithm);
-            cipher.init(Cipher.DECRYPT_MODE, key);// 初始化
+            cipher.init(Cipher.DECRYPT_MODE, keyProvider.forAccount(uid),keyProvider.getIv(uid));// 初始化
             ObjectInputStream inputStream=new ObjectInputStream(new ByteArrayInputStream(cipher.doFinal(data)));//将数据解密
             assign((AccountItem) inputStream.readObject());//将数据写入自己
             if(!this.uid.equals(uid))throw new InvalidKeyException("解密出的uid不一致，密码错误或者解码错了对象");
-        } catch ( NoSuchAlgorithmException|NoSuchPaddingException| BadPaddingException| IllegalBlockSizeException|IOException e) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException | IOException | InvalidAlgorithmParameterException e) {
             e.printStackTrace();
             exit(1);
         }
@@ -115,13 +115,12 @@ public class AccountItem implements Serializable {//表示一条帐号记录
      */
     public byte[] getEncryptedData(KeyProvider keyProvider){//得到密文
         try {
-            Key key=keyProvider.forAccount(uid);
             ByteArrayOutputStream arrayStream=new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream=new ObjectOutputStream(arrayStream);
             objectOutputStream.writeObject(this);//将自己写入字节数组流
 
             Cipher cipher = Cipher.getInstance(global_encrypt_algorithm);
-            cipher.init(Cipher.ENCRYPT_MODE, key);// 初始化
+            cipher.init(Cipher.ENCRYPT_MODE,keyProvider.forAccount(uid),keyProvider.getIv(uid));// 初始化
             return cipher.doFinal(arrayStream.toByteArray());//返回加密结果
 
         } catch ( Exception e) {

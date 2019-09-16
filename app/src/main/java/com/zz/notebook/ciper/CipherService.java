@@ -17,7 +17,9 @@ public class CipherService {
         KeyGenerator kgen = null;
         try {
             kgen = KeyGenerator.getInstance("AES");
-            kgen.init(256, new SecureRandom(seed));
+            SecureRandom random=SecureRandom.getInstance("SHA1PRNG");
+            random.setSeed(seed);
+            kgen.init(256, random);
             return kgen.generateKey();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();

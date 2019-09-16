@@ -7,8 +7,16 @@ import com.zz.notebook.util.ByteArrayUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
+
+import static com.zz.notebook.util.BasicService.global_encrypt_algorithm;
 import static com.zz.notebook.util.ByteArrayUtils.bytesToUUID;
 import static com.zz.notebook.util.ByteArrayUtils.uuidToBytes;
 
