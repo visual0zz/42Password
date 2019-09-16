@@ -12,6 +12,8 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 
 import static com.zz.notebook.ciper.CipherService.aesKeyFromSeed;
+import static com.zz.notebook.ciper.CipherService.getSalt;
+import static com.zz.notebook.ciper.CipherService.hash;
 import static com.zz.notebook.util.BasicService.global_encrypt_algorithm;
 import static com.zz.notebook.util.ByteArrayUtils.concat;
 import static com.zz.notebook.util.ByteArrayUtils.uuidToBytes;
@@ -40,9 +42,8 @@ public class CipherProvider {
             return new IvParameterSpec(result);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            exit(1);
+            throw new Database.UnfixableDatabaseException("使用了不存在的算法");
         }
-        return null;
     }
 
     /**
@@ -59,12 +60,19 @@ public class CipherProvider {
             return cipher;
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException | InvalidKeyException e) {
             e.printStackTrace();
-            exit(1);
+            throw new Database.UnfixableDatabaseException("尝试生成账户条目加密器时发生不可恢复错误");
         }
-        return null;
     }
 
-    public Cipher getCipherMaster(){
-        
+    public Cipher getCipherMaster(byte[] salt,byte[] masterkey,int opmode){
+        try {
+            Key key=aesKeyFromSeed(concat(masterkey,salt));
+            Cipher cipher= Cipher.getInstance(global_encrypt_algorithm);
+            cipher.init(opmode,key);
+            return cipher;
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
+            e.printStackTrace();
+            throw new Database.UnfixableDatabaseException("尝试生成主密钥加密器时发生不可恢复错误");
+        }
     }
 }

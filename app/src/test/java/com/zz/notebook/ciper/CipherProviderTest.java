@@ -28,7 +28,7 @@ public class CipherProviderTest {
     @Test
     public void testforAccount() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Class clazz= CipherProvider.class;
-        Method forAccount=clazz.getDeclaredMethod("forAccount", UUID.class);
+        Method forAccount=clazz.getDeclaredMethod("getKeyForAccount", UUID.class);
         forAccount.setAccessible(true);
 
         UUID uuid1=UUID.randomUUID();
@@ -46,7 +46,7 @@ public class CipherProviderTest {
     @Test
     public void testIvParameterSpec() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Class clazz= CipherProvider.class;
-        Method getIv=clazz.getDeclaredMethod("getIv", UUID.class);
+        Method getIv=clazz.getDeclaredMethod("getIvForAccount", UUID.class);
         getIv.setAccessible(true);
 
         UUID uuid1=UUID.randomUUID();

@@ -103,7 +103,7 @@ public class AccountItem implements Serializable {//表示一条帐号记录
             if(!this.uid.equals(uid))throw new InvalidKeyException("解密出的uid不一致，密码错误或者解码错了对象");
         } catch (BadPaddingException | IllegalBlockSizeException | IOException e) {
             e.printStackTrace();
-            exit(1);
+            throw new Database.UnfixableDatabaseException("AccountItem读入了无法解析的数据块");
         }
     }
 
@@ -121,11 +121,10 @@ public class AccountItem implements Serializable {//表示一条帐号记录
             Cipher cipher = cipherProvider.getCipherForAccount(uid,Cipher.ENCRYPT_MODE);// 初始化
             return cipher.doFinal(arrayStream.toByteArray());//返回加密结果
 
-        } catch ( Exception e) {
+        } catch (BadPaddingException | IllegalBlockSizeException | IOException e) {
             e.printStackTrace();
-            exit(1);
+            throw new Database.UnfixableDatabaseException("加密AccountItem时发生不可恢复错误");
         }
-        return null;
     }
 
 

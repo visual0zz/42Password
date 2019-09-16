@@ -23,9 +23,8 @@ public class CipherService {
             return kgen.generateKey();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            exit(1);
+            throw new Database.UnfixableDatabaseException("尝试使用不存在的算法");
         }
-        return null;
     }
     public static byte[] getSalt(){
         KeyGenerator kgen = null;
@@ -35,9 +34,8 @@ public class CipherService {
             return kgen.generateKey().getEncoded();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            exit(1);
+            throw new Database.UnfixableDatabaseException("尝试使用不存在的算法");
         }
-        return null;
     }
     public static byte[] hash(byte[] in){
         try {
@@ -46,8 +44,7 @@ public class CipherService {
             return messageDigest.digest();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            exit(1);
+            throw new Database.UnfixableDatabaseException("尝试使用不存在的算法");
         }
-        return null;
     }
 }

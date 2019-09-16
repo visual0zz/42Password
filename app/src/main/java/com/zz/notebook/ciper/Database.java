@@ -10,8 +10,8 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
 import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -28,10 +28,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import static com.zz.notebook.ciper.CipherService.aesKeyFromSeed;
 import static com.zz.notebook.ciper.CipherService.getSalt;
 import static com.zz.notebook.ciper.CipherService.hash;
-import static com.zz.notebook.util.BasicService.global_encrypt_algorithm;
 import static com.zz.notebook.util.ByteArrayUtils.bytesToHex;
 import static com.zz.notebook.util.ByteArrayUtils.concat;
 import static com.zz.notebook.util.ByteArrayUtils.hexToBytes;
@@ -41,6 +39,7 @@ public class Database {
     Logger logger=Logger.getLogger(Database.class.getName());
     private File databaseFile;
     private CipherProvider cipherProvider;
+    private byte[] salt;
     private List<AccountItem> data;
     /**
      * 读取或者新建数据库用于储存数据
@@ -54,12 +53,12 @@ public class Database {
             else if(xmlDatabaseFile.exists())
                 readDataFromFile(masterkey);
             else{
-                createNewDataFile(masterkey);
-                readDataFromFile(masterkey);
+                initNewDatabase(masterkey);
+                saveDataToFile(masterkey);
             }
         } catch (NoSuchPaddingException | NoSuchAlgorithmException | ParserConfigurationException | TransformerException | BadPaddingException | IllegalBlockSizeException e) {
             e.printStackTrace();
-            exit(1);
+            throw new Database.UnfixableDatabaseException("建立数据库时发生不可恢复错误");
         }
         catch (IOException|SAXException|InvalidKeyException|NullPointerException e){
             throw new DatabaseException(e);
@@ -106,7 +105,7 @@ public class Database {
      * @throws BadPaddingException
      * @throws IllegalBlockSizeException
      */
-    private void createNewDataFile(byte[] masterkey) throws ParserConfigurationException, TransformerException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    private void saveDataToFile(byte[] masterkey) throws ParserConfigurationException, TransformerException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         Document document=DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         document.setXmlStandalone(true);
         //////////////////////////////////////////////////////////////////////////
@@ -114,10 +113,8 @@ public class Database {
         Element salt_element=document.createElement("salt");
         Element master_element=document.createElement("master");
         byte[] salt=getSalt();//用于隐藏密文统计规律的盐，防止攻击者判断两个密文是否使用了相同的密钥进行加密
-        Key key=aesKeyFromSeed(concat(masterkey,salt));
         byte[] master_data=concat(concat(salt,getSalt()),hash(masterkey));
-        Cipher cipher=Cipher.getInstance(global_encrypt_algorithm);
-        cipher.init(Cipher.ENCRYPT_MODE,key);
+        Cipher cipher=cipherProvider.getCipherMaster(salt,masterkey,Cipher.ENCRYPT_MODE);
         byte[] master=cipher.doFinal(master_data);
 
         salt_element.setTextContent(bytesToHex(salt));
@@ -133,7 +130,12 @@ public class Database {
         transformer.transform(new DOMSource(document), new StreamResult(databaseFile));
     }
 
-    public class DatabaseException extends Exception{
+    private void initNewDatabase(byte[] master_key){
+        salt=getSalt();
+        data=new ArrayList<>();
+        cipherProvider=new CipherProvider(hash(master_key),getSalt());
+    }
+    public static class DatabaseException extends Exception{
         public DatabaseException(String message) {
             super(message);
         }
@@ -142,9 +144,12 @@ public class Database {
             super(cause);
         }
     }
-    public class WrongMasterPasswordException extends Exception{
+    public static class WrongMasterPasswordException extends Exception{
         public WrongMasterPasswordException(String message) {
             super(message);
         }
+    }
+    public static class UnfixableDatabaseException extends RuntimeException{
+        public UnfixableDatabaseException(String message){super(message);}
     }
 }
