@@ -28,11 +28,15 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import static com.zz.notebook.ciper.CipherService.aes_key_length;
 import static com.zz.notebook.ciper.CipherService.getRandomBytes;
 import static com.zz.notebook.ciper.CipherService.hash;
+import static com.zz.notebook.ciper.CipherService.hash_length;
+import static com.zz.notebook.ciper.CipherService.random_bytes_length;
 import static com.zz.notebook.util.ByteArrayUtils.bytesToHex;
 import static com.zz.notebook.util.ByteArrayUtils.concat;
 import static com.zz.notebook.util.ByteArrayUtils.hexToBytes;
+import static com.zz.notebook.util.ByteArrayUtils.isEqual;
 import static com.zz.notebook.util.ByteArrayUtils.uuidToBytes;
 
 public class Database {
@@ -45,7 +49,7 @@ public class Database {
      * 读取或者新建数据库用于储存数据
      * @param xmlDatabaseFile 用于储存数据的数据库文件
      */
-    Database(File xmlDatabaseFile,byte[] masterkey) throws DatabaseException {
+    Database(File xmlDatabaseFile,byte[] masterkey) throws DatabaseException, WrongMasterPasswordException {
         try {
             this.databaseFile =xmlDatabaseFile;
             if(xmlDatabaseFile==null)
@@ -73,7 +77,7 @@ public class Database {
      * @throws IOException ..
      * @throws SAXException ..
      */
-    private void readDataFromFile(byte[] masterkey) throws ParserConfigurationException, IOException, SAXException {
+    private void readDataFromFile(byte[] masterkey) throws ParserConfigurationException, IOException, SAXException, BadPaddingException, IllegalBlockSizeException, WrongMasterPasswordException {
         Document document=DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(databaseFile);
         NodeList nodes=document.getElementsByTagName("root").item(0).getChildNodes();
         Node salt_node=null,master_node=null;
@@ -84,16 +88,34 @@ public class Database {
             else if(node.getNodeName().equals("master"))
                 master_node=node;
         }
-        byte[] salt=hexToBytes(salt_node.getTextContent());
+        salt=hexToBytes(salt_node.getTextContent());
         byte[] master=hexToBytes(master_node.getTextContent());
+        cipherProvider=new CipherProvider(hash(salt,masterkey),null);//解密之前不知道randomkey
+        byte[]master_data=cipherProvider.getCipherMaster(Cipher.DECRYPT_MODE).doFinal(master);
+        System.out.println("解密后master_data="+bytesToHex(master_data));//todo delete
+        //{//进行master_data的切分 master_data= salt+randomkey+hash(masterkey)
+            byte[] salt_inner=new byte[aes_key_length];
+            byte[] randomkey_inner=new byte[random_bytes_length];
+            byte[] hashmasterkey_inner=new byte[hash_length];
+            if(aes_key_length+random_bytes_length+hash_length!=master_data.length)throw new UnfixableDatabaseException("数据库读入的数据头格式异常");
+            for (int i=0;i<master_data.length;i++){//进行数组切分
+                if(i<aes_key_length)
+                    salt_inner[i]=master_data[i];
+                else if(i<aes_key_length+random_bytes_length)
+                    randomkey_inner[i-aes_key_length]=master_data[i];
+                else
+                    hashmasterkey_inner[i-aes_key_length-random_bytes_length]=master_data[i];
+            }
+        //}
 
+        System.out.println("解密后");//todo delete
+        System.out.println("salt="+bytesToHex(salt_inner));
+        System.out.println("randomkey="+bytesToHex(randomkey_inner));
+        System.out.println("hash_masterkey="+bytesToHex(hashmasterkey_inner));
+        if(!isEqual(salt_inner,salt)||!isEqual(hashmasterkey_inner,hash(salt,masterkey)))throw new WrongMasterPasswordException("密码错误，无法解密数据库");
+        cipherProvider=new CipherProvider(hashmasterkey_inner,randomkey_inner);
+        ///////////////////////////////////////开始读取数据区///////////////////////////////////////////////////////
 
-//        byte[] salt=getRandomBytes();//用于隐藏密文统计规律的盐，防止攻击者判断两个密文是否使用了相同的密钥进行加密
-//        Key key=aesKeyFromSeed(concat(masterkey,salt));
-//        byte[] master_data=concat(concat(salt,getRandomBytes()),hash(masterkey));
-//        Cipher cipher=Cipher.getInstance(global_encrypt_algorithm);
-//        cipher.init(Cipher.ENCRYPT_MODE,key);
-//        byte[] master=cipher.doFinal(master_data);
     }
 
     /**
@@ -114,15 +136,21 @@ public class Database {
         Element root_element=document.createElement("root");
         Element salt_element=document.createElement("salt");
         Element master_element=document.createElement("master");
-        byte[] master_data=concat(concat(salt,cipherProvider.randomkey),hash(masterkey));
+        System.out.println("加密前");//todo delete
+        System.out.println("salt="+bytesToHex(salt));
+        System.out.println("randomkey="+bytesToHex(cipherProvider.randomkey));
+        System.out.println("hash_masterkey="+bytesToHex(hash(salt,masterkey)));
+        byte[] master_data=concat(concat(salt,cipherProvider.randomkey),hash(salt,masterkey));
+
+        System.out.println("加密前master_data="+bytesToHex(master_data));//todo delete
         Cipher cipher=cipherProvider.getCipherMaster(Cipher.ENCRYPT_MODE);
         byte[] master=cipher.doFinal(master_data);
 
         salt_element.setTextContent(bytesToHex(salt));
         master_element.setTextContent(bytesToHex(master));
         root_element.appendChild(salt_element);
-        root_element.appendChild(master_element);
-        for(AccountItem item:data){
+        root_element.appendChild(master_element);//写入头信息
+        for(AccountItem item:data){//写入所有的账户信息条目
             Element account_element=document.createElement("account");
             Element uuid_element=document.createElement("uuid");
             Element data_element=document.createElement("data");
@@ -136,8 +164,8 @@ public class Database {
 
         /////////////////////////////////////////////////////////////////////////
         Transformer transformer= TransformerFactory.newInstance().newTransformer();
-        transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-        transformer.setParameter(OutputKeys.ENCODING,"utf-8");
+        transformer.setOutputProperty(OutputKeys.INDENT,"yes");//进行分行，使便于阅读
+        transformer.setParameter(OutputKeys.ENCODING,"utf-8");//使用utf-8编码
         transformer.transform(new DOMSource(document), new StreamResult(databaseFile));
     }
 
@@ -149,7 +177,7 @@ public class Database {
     private void initNewDatabase(byte[] master_key,boolean withSample){
         salt= getRandomBytes();//用于隐藏密文统计规律的盐，防止攻击者判断两个密文是否使用了相同的密钥进行加密
         data=new ArrayList<>();
-        cipherProvider=new CipherProvider(hash(concat(salt,master_key)), getRandomBytes());
+        cipherProvider=new CipherProvider(hash(salt,master_key), getRandomBytes());
         if(!withSample)return;
         AccountItem item=new AccountItem();
         item.setTitle("示例账户");

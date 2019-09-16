@@ -13,7 +13,9 @@ import javax.crypto.spec.IvParameterSpec;
 
 import static com.zz.notebook.ciper.CipherService.aesKeyFromSeed;
 import static com.zz.notebook.util.BasicService.global_encrypt_algorithm;
+import static com.zz.notebook.util.ByteArrayUtils.bytesToHex;
 import static com.zz.notebook.util.ByteArrayUtils.concat;
+import static com.zz.notebook.util.ByteArrayUtils.int2byte;
 import static com.zz.notebook.util.ByteArrayUtils.uuidToBytes;
 
 /**
@@ -28,12 +30,11 @@ public class CipherProvider {
         byte[] accountkey= concat(concat(randomkey, masterkey_hash),uid_bytes);
         return aesKeyFromSeed(accountkey);
     }
-    private IvParameterSpec getIvForAccount(UUID uuid){return getIvFromSeed(uuidToBytes(uuid));}
+    private IvParameterSpec getIvForAccount(UUID uuid){return getIvFromSeed(concat(concat(randomkey,uuidToBytes(uuid)),masterkey_hash));}
     private IvParameterSpec getIvFromSeed(byte[] seed){
         try {
-            byte[] accountkey= concat(concat(randomkey,seed),masterkey_hash);
             SecureRandom random=SecureRandom.getInstance("SHA1PRNG");
-            random.setSeed(accountkey);
+            random.setSeed(concat(int2byte(0x45687813),seed));
             byte[] result=new byte[16];
             random.nextBytes(result);
             return new IvParameterSpec(result);

@@ -51,9 +51,9 @@ public class CipherServiceTest {
         byte[] salt1= getRandomBytes();
         byte[] salt2= getRandomBytes();
 
-        byte[] hash1=hash(salt1);
-        byte[] hash2=hash(salt2);
-        byte[] hash3=hash(salt2);
+        byte[] hash1=hash(salt1,salt1);
+        byte[] hash2=hash(salt1,salt2);
+        byte[] hash3=hash(salt1,salt2);
         Assert.assertTrue(isEqual(hash2,hash3));
         Assert.assertFalse(isEqual(hash1,hash2));
     }
