@@ -75,7 +75,7 @@ public class Database {
      */
     private void readDataFromFile(byte[] masterkey) throws ParserConfigurationException, IOException, SAXException {
         Document document=DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(databaseFile);
-        NodeList nodes=document.getElementById("root").getChildNodes();
+        NodeList nodes=document.getElementsByTagName("root").item(0).getChildNodes();
         Node salt_node=null,master_node=null;
         for(int i=0;i<nodes.getLength();i++){//循环所有一级节点，找到 盐 和 头
             Node node=nodes.item(i);
