@@ -12,12 +12,9 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 
 import static com.zz.notebook.ciper.CipherService.aesKeyFromSeed;
-import static com.zz.notebook.ciper.CipherService.getSalt;
-import static com.zz.notebook.ciper.CipherService.hash;
 import static com.zz.notebook.util.BasicService.global_encrypt_algorithm;
 import static com.zz.notebook.util.ByteArrayUtils.concat;
 import static com.zz.notebook.util.ByteArrayUtils.uuidToBytes;
-import static java.lang.System.exit;
 
 /**
  * 用于生成不同对象的不同加密密钥的密钥生成器，根据全局密钥设定，生成具体的加密密钥
@@ -31,10 +28,10 @@ public class CipherProvider {
         byte[] accountkey= concat(concat(randomkey, masterkey_hash),uid_bytes);
         return aesKeyFromSeed(accountkey);
     }
-    private IvParameterSpec getIvForAccount(UUID uuid){
+    private IvParameterSpec getIvForAccount(UUID uuid){return getIvFromSeed(uuidToBytes(uuid));}
+    private IvParameterSpec getIvFromSeed(byte[] seed){
         try {
-            byte[] uid_bytes=uuidToBytes(uuid);
-            byte[] accountkey= concat(concat(randomkey,uid_bytes),masterkey_hash);
+            byte[] accountkey= concat(concat(randomkey,seed),masterkey_hash);
             SecureRandom random=SecureRandom.getInstance("SHA1PRNG");
             random.setSeed(accountkey);
             byte[] result=new byte[16];
@@ -64,15 +61,27 @@ public class CipherProvider {
         }
     }
 
-    public Cipher getCipherMaster(byte[] salt,byte[] masterkey,int opmode){
+    public Cipher getCipherMaster(int opmode){
         try {
-            Key key=aesKeyFromSeed(concat(masterkey,salt));
+            Key key=aesKeyFromSeed(masterkey_hash);
             Cipher cipher= Cipher.getInstance(global_encrypt_algorithm);
-            cipher.init(opmode,key);
+            cipher.init(opmode,key,getIvFromSeed(masterkey_hash));
             return cipher;
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException e) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException e) {
             e.printStackTrace();
             throw new Database.UnfixableDatabaseException("尝试生成主密钥加密器时发生不可恢复错误");
+        }
+    }
+    public Cipher getInnerCipher(int opmode){
+
+        try {
+            Key key=aesKeyFromSeed(randomkey);
+            Cipher cipher= Cipher.getInstance(global_encrypt_algorithm);
+            cipher.init(opmode,key,getIvFromSeed(randomkey));
+            return cipher;
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+            throw new Database.UnfixableDatabaseException("尝试生成内部加密器时发生不可恢复错误");
         }
     }
 }

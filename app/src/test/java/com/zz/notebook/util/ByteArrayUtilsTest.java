@@ -7,14 +7,13 @@ import org.junit.Test;
 
 import java.util.UUID;
 
-import static com.zz.notebook.ciper.CipherService.getSalt;
+import static com.zz.notebook.ciper.CipherService.getRandomBytes;
 import static com.zz.notebook.util.ByteArrayUtils.byte2long;
 import static com.zz.notebook.util.ByteArrayUtils.bytesToHex;
 import static com.zz.notebook.util.ByteArrayUtils.bytesToUUID;
 import static com.zz.notebook.util.ByteArrayUtils.hexToBytes;
 import static com.zz.notebook.util.ByteArrayUtils.long2byte;
 import static com.zz.notebook.util.ByteArrayUtils.uuidToBytes;
-import static org.junit.Assert.*;
 
 public class ByteArrayUtilsTest {
 
@@ -29,7 +28,7 @@ public class ByteArrayUtilsTest {
     public void testhexToBytes(){
         String str="3A4b9fd7";
         Assert.assertEquals(str.toUpperCase(),bytesToHex(hexToBytes(str)));
-        byte[] a=getSalt();
+        byte[] a= getRandomBytes();
         Assert.assertArrayEquals(a,hexToBytes(bytesToHex(a)));
     }
     @Test

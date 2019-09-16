@@ -13,30 +13,38 @@ import static java.lang.System.exit;
 
 public class CipherService {
 
+    public static final int aes_key_length=256;
     public static Key aesKeyFromSeed(byte[] seed){
         KeyGenerator kgen = null;
         try {
             kgen = KeyGenerator.getInstance("AES");
             SecureRandom random=SecureRandom.getInstance("SHA1PRNG");
             random.setSeed(seed);
-            kgen.init(256, random);
+            kgen.init(aes_key_length, random);
             return kgen.generateKey();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             throw new Database.UnfixableDatabaseException("尝试使用不存在的算法");
         }
     }
-    public static byte[] getSalt(){
-        KeyGenerator kgen = null;
+
+
+    public static final int random_bytes_length=256;
+    public static byte[] getRandomBytes(){
         try {
-            kgen = KeyGenerator.getInstance("AES");
-            kgen.init(256, new SecureRandom());
-            return kgen.generateKey().getEncoded();
+            SecureRandom random=SecureRandom.getInstance("SHA1PRNG");
+            byte[] result=new byte[random_bytes_length];
+            random.nextBytes(result);
+            return result;
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             throw new Database.UnfixableDatabaseException("尝试使用不存在的算法");
         }
     }
+
+
+
+    public static final int hash_length=256;
     public static byte[] hash(byte[] in){
         try {
             MessageDigest messageDigest=MessageDigest.getInstance("SHA-256");

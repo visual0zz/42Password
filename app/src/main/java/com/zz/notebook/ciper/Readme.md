@@ -20,7 +20,7 @@ ciper这个包应该不使用任何android特性，可以在pc java上运行
 **数据库的文件储存形态**
 ------------------------
 ```
-<data>
+<root>
 <master>这里放置主密钥的密文base64</master>
 <salt>这里放置盐的明文base64</salt>
 <account>
@@ -36,12 +36,13 @@ ciper这个包应该不使用任何android特性，可以在pc java上运行
     <data>这里放置账户信息的密文base64</data>
 </account>
 ...
-</data>
+</root>
 ```
 其中
-* master= base64( aes( key(master_key+salt), salt+random_key+hash(master_key) ) )
-* salt=base64( salt )
-* data=base64( aes( 
+* master= hex( aes( hash(master_key), salt+random_key+hash(master_key) ) )
+* salt=hex( salt )
+* data=hex( aes( 
     key( uuid,random_key,hash( master_key ))
     ,account_item
   ))
+* hash=sha256(salt+0x13758496+master_key)

@@ -33,13 +33,13 @@ public class CipherProviderTest {
 
         UUID uuid1=UUID.randomUUID();
         UUID uuid2=new UUID(uuid1.getMostSignificantBits(),uuid1.getLeastSignificantBits());
-        System.out.println(uuid1);
-        System.out.println(uuid2);
+//        System.out.println(uuid1);
+//        System.out.println(uuid2);
         CipherProvider provider=new CipherProvider("sdaf".getBytes(),"asfdsadf".getBytes());
         String a=bytesToHex(((Key)forAccount.invoke(provider,uuid1)).getEncoded());
         String b=bytesToHex(((Key)forAccount.invoke(provider,uuid2)).getEncoded());
-        System.out.println(a);
-        System.out.println(b);
+//        System.out.println(a);
+//        System.out.println(b);
         Assert.assertEquals(a,b);
         Assert.assertNotEquals(a,bytesToHex(((Key)forAccount.invoke(provider,UUID.randomUUID())).getEncoded()));
     }
@@ -51,13 +51,13 @@ public class CipherProviderTest {
 
         UUID uuid1=UUID.randomUUID();
         UUID uuid2=new UUID(uuid1.getMostSignificantBits(),uuid1.getLeastSignificantBits());
-        System.out.println(uuid1);
-        System.out.println(uuid2);
+//        System.out.println(uuid1);
+//        System.out.println(uuid2);
         CipherProvider provider=new CipherProvider("sdaf".getBytes(),"asfdsadf".getBytes());
         String a=bytesToHex(((IvParameterSpec)getIv.invoke(provider,uuid1)).getIV());
         String b=bytesToHex(((IvParameterSpec)getIv.invoke(provider,uuid2)).getIV());
-        System.out.println(a);
-        System.out.println(b);
+//        System.out.println(a);
+//        System.out.println(b);
         Assert.assertEquals(a,b);
         Assert.assertNotEquals(a,bytesToHex(((IvParameterSpec)getIv.invoke(provider,UUID.randomUUID())).getIV()));
     }
