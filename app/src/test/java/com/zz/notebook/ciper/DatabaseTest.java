@@ -14,9 +14,8 @@ public class DatabaseTest {
     private static final String database_test_file="zz_test.xml";
     @Test
     public void testDatabase() throws Database.DatabaseException, Database.WrongMasterPasswordException {
-        Database database=new Database(new File(database_test_file),"123456".getBytes());
         new Database(new File(database_test_file),"123456".getBytes());
-
+        Database database=new Database(new File(database_test_file),"123456".getBytes());
     }
     @After
     public void after(){
