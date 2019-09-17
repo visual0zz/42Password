@@ -4,14 +4,14 @@
     <item android:state_pressed="false">
         <shape>
             <corners android:radius="26dp"/>
-            <solid android:color="@color/login_input_active"/>
+            <solid android:color="@color/colorPrimaryDark"/>
         </shape>
     </item>
 
     <item android:state_pressed="true">
         <shape>
             <corners android:radius="26dp"/>
-            <solid android:color="@color/account_pressed_true"/>
+            <solid android:color="@color/colorAccent"/>
         </shape>
     </item>
 

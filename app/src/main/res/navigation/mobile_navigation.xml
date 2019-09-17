@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_test"
         android:name="com.zz.notebook.ui.test.TestFragment"
         android:label="@string/menu_test"
         tools:layout="@layout/fragment_test" />

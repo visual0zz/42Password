@@ -242,5 +242,19 @@ public class Database {
         }
         return null;
     }
+
+    /**
+     * 将数据库数据保存到文件
+     * @return 保存操作成功返回true 失败返回false
+     */
+    public boolean saveToFile(){
+        try {
+            saveDataToFile(cipherProvider.masterkey_hash);
+        } catch (ParserConfigurationException | TransformerException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
     public AccountItem getAccountItem(int index){return data.get(index);}
 }

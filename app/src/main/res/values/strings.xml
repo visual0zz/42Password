@@ -1,11 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">42Password</string>
-    <string name="navigation_drawer_open" >Open navigation drawer</string>
-    <string name="navigation_drawer_close" >Close navigation drawer</string>
-    <string name="nav_header_title"  translatable="false">Android Studio</string>
-    <string name="nav_header_subtitle"  translatable="false">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_test">Test</string>
@@ -14,30 +9,11 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="action_search">Search</string>
-    <string name="hint_password">password</string>
-    <string name="loading_image">loading image...</string>
+    <string name="hint_password">password here</string>
     <string name="login">login</string>
-    <string name="login_forget_hint">forget??</string>
-    <string name="login_hold_hint">login hold ?</string>
-    <string name="login_input_username_hint">username</string>
-    <string name="login_other_hint">other</string>
     <string name="login_register_hint">registe</string>
     <string name="message_pwd_error">wrong password</string>
-    <string name="message_username_null">username is empty!!</string>
-    <string name="register_female_hint">female</string>
     <string name="register_done_hint">done</string>
-    <string name="register_input_username_hint">phone number</string>
-    <string name="register_man_hint">male</string>
-    <string name="register_pwd_hint">input at least 6 char</string>
-    <string name="register_sms_auth_code">sms auth code</string>
-    <string name="register_sms_hint">get sms code</string>
-    <string name="register_sms_wait_hint">wait a moment</string>
-    <string name="register_username_hint">username</string>
-    <string name="reset_pwd_hint">input new password at least 6 char</string>
-    <string name="reset_pwd_submit">comfirm</string>
-    <string name="retrieve_pwd_step_hint">next step</string>
-    <string name="retrieve_pwd_email_label">email here</string>
-    <string name="retrieve_pwd_email_label_one">email here</string>
 
 
     <!--新版登录专用-->

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FF5500</color>
-    <color name="colorPrimaryDark">#9F3500</color>
+    <color name="colorPrimary">#FF9955</color>
+    <color name="colorPrimaryDark">#D14701</color>
     <color name="colorAccent">#FF5500</color>
     <color name="colorGuideLine">#cfcfcf</color>
     <!-- 常用颜色值 -->
@@ -18,7 +18,6 @@
 
     <!-- 新版登录模块-->
     <color name="login_line_color">#dededf</color>
-    <color name="login_input_active">#31b968</color>
     <color name="login_other_color">#cacaca</color>
     <color name="account_input_bg_color">#33ffffff</color>
     <color name="account_lock_bg">#ff43815c</color>
