@@ -15,6 +15,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Timestamp;
+import java.sql.Time;
 import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
@@ -176,7 +177,12 @@ public class AccountItem implements Serializable {//表示一条帐号记录
     public String toString() {
         return "{uid="+uid+"\tgroup="+group+"\ttitle="+title+"\tusername="+username+"\tpassword="+password+"\turl="+url+"\tnotes="+notes+"}";
     }
-
-
+    public String getBirthmark(){
+        return notes+username+title+url;
+    }
+    public String getTimeString(){
+        Time time=new Time(timestamp);
+        return time.toString();
+    }
 }
 

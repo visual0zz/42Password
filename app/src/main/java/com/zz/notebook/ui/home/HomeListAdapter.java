@@ -40,10 +40,10 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.VH>{
     @Override
     public void onBindViewHolder(VH holder, int position) {
         AccountItem note=dataModel.getAt(position);
-        holder.app_name.setText("这是第"+position+"项");
-        holder.account.setText(position+"@"+position+".com");
-        holder.avatar.setImageDrawable(BasicService.getAvatar("item"+position));
-        holder.time.setText(position+":"+position+":"+position);
+        holder.app_name.setText(note.getTitle());
+        holder.account.setText(note.getUsername());
+        holder.avatar.setImageDrawable(BasicService.getAvatar(note.getBirthmark()));
+        holder.time.setText(note.getTimeString());
         holder.itemView.setOnClickListener(v ->toast("点击了第"+position+"个按钮"));
     }
 
