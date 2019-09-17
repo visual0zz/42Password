@@ -14,7 +14,7 @@
         android:layout_height="48dp"
         android:background="@drawable/bg_login_navigation_bar"
         android:contentDescription="@null"
-        app:srcCompat="@mipmap/btn_back_normal" />
+        app:srcCompat="@drawable/btn_back_normal" />
 
     <TextView
         android:id="@+id/tv_navigation_label"
