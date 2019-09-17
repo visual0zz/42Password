@@ -279,6 +279,7 @@ public class Database {
     }
     class Editor {
         private Editor(AccountItem in){
+            finished=false;
             if(in!=null){//不为空表示编辑
                 oldItem=in.getUid();//缓存旧的UUID为了最后删除旧的条目
                 newItem.assign(in);
@@ -287,15 +288,31 @@ public class Database {
                 newItem =new AccountItem();
             }
         }
+        boolean finished;//用于限制提交之后继续操作的变量
         UUID oldItem;
         AccountItem newItem;
 
         public void submit(){//将编辑动作实际作用到数据库
+            if(finished)return;
             newItem.setUid(UUID.randomUUID());//产生新的uuid
             newItem.setTimestamp(System.currentTimeMillis());//插入新的时间戳
             Database.this.data.add(newItem);//插入新的
             if(oldItem!=null)
                 Database.this.data.remove(getAccountItem(oldItem));//删除旧的
+            finished=true;
+        }
+        public void delete(){//将Editor对应的条目删除
+            if(finished)return;
+            if(oldItem!=null)
+                Database.this.data.remove(getAccountItem(oldItem));//删除旧的
+            finished=true;
+        }
+        public void revert(){//放弃本编辑器的所有修改
+            if(finished)return;
+            if(oldItem!=null)//如果有旧的就撤回旧的
+                newItem=Database.this.getAccountItem(oldItem);
+            else
+                newItem=new AccountItem();//如果是新建操作的撤销，就直接新建
         }
         public String getGroup() { return newItem.getGroup(); }
         public String getTitle() { return newItem.getTitle(); }
