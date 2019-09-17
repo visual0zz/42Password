@@ -24,7 +24,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-        initHomeViewModel(null);//todo 传递数据库实例
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         RecyclerView recyclerView = root.findViewById(R.id.note_list_view);//加载主列表
@@ -46,9 +45,6 @@ public class HomeFragment extends Fragment {
         activity.searchActionProvider=null;//当本页面隐藏时消除搜索事件
         homeViewModel.setListAdapter(null);//清除无效的引用，防止更新已经不存在的view
         super.onDestroyView();
-    }
-    private void initHomeViewModel(Database db){
-        homeViewModel.setDatabase(db);
     }
 }
 

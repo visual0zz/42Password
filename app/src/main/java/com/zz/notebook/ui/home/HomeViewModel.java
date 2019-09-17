@@ -8,10 +8,7 @@ import com.zz.notebook.ciper.Database;
 
 public class HomeViewModel extends ViewModel {
     private HomeListAdapter listAdapter;
-    private Database database;
-    public void setDatabase(Database database) {
-        this.database = database;
-    }
+    public static Database database;
     public void setListAdapter(HomeListAdapter adapter){listAdapter=adapter;}
     public void doSearch(String str){
 

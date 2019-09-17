@@ -1,85 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:id="@+id/frameLayout">
+    android:background="@mipmap/login_background"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
-        android:id="@+id/lay_login_container"
-        android:layout_width="wrap_content"
+        android:layout_width="0sp"
         android:layout_height="wrap_content"
-        android:background="@mipmap/login_background"
         android:orientation="vertical"
-        android:paddingBottom="16dp"
-        tools:layout_conversion_absoluteHeight="731dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_conversion_absoluteWidth="411dp">
-
-        <include
-            android:id="@+id/ly_retrieve_bar"
-            layout="@layout/activity_main_login_navigation_bar" />
+        android:paddingBottom="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.39">
 
         <ImageView
-            android:id="@+id/iv_login_logo"
-            android:layout_width="wrap_content"
+            android:id="@+id/login_avatar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:contentDescription="@null"
-            android:paddingTop="20dp"
-            android:scaleType="centerInside"
-            app:srcCompat="@mipmap/ic_launcher" />
+            android:contentDescription="@string/app_name"
+            app:srcCompat="@drawable/big_ic_laucher"
+            tools:srcCompat="@drawable/big_ic_laucher" />
 
         <LinearLayout
-            android:id="@+id/ll_login_pwd"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="24dp"
+            android:layout_height="52sp"
+            android:layout_marginLeft="24sp"
+            android:layout_marginTop="16sp"
+            android:layout_marginRight="24sp"
             android:background="@drawable/bg_login_input_ok"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/et_login_pwd"
-                android:layout_width="0dp"
+                android:id="@+id/login_password_textview"
+                android:layout_width="0sp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16sp"
+                android:layout_marginRight="16sp"
                 android:layout_weight="1"
+                android:autofillHints=""
                 android:background="@null"
                 android:hint="@string/hint_password"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:minLines="1"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/login_line_color"
+                android:paddingLeft="4sp"
+                android:paddingRight="4sp"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/text_secondary_color"
                 android:textCursorDrawable="@null"
-                android:textSize="@dimen/font_16" />
+                android:textSize="@dimen/font_16" tools:targetApi="o" />
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/bt_login_submit"
+            android:id="@+id/login_button"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="24dp"
+            android:layout_height="48sp"
+            android:layout_marginLeft="24sp"
+            android:layout_marginTop="20sp"
+            android:layout_marginRight="24sp"
             android:background="@drawable/bg_login_submit"
-            android:elevation="0dp"
+            android:elevation="0sp"
             android:outlineProvider="none"
             android:text="@string/login"
-            android:textColor="@color/white"
+            android:textColor="@color/account_input_bg_color"
             android:textSize="@dimen/font_18"
             tools:targetApi="lollipop" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/login_purgedata_action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:background="@android:drawable/menuitem_background"
+                android:text="@string/purge_database"
+                android:textColor="@color/design_default_color_primary_dark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </LinearLayout>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

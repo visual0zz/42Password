@@ -6,8 +6,12 @@ import org.w3c.dom.Document;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Scanner;
 
+import javax.crypto.KeyGenerator;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -34,6 +38,12 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void test() throws ParserConfigurationException, TransformerException {
+    public void test() throws ParserConfigurationException, TransformerException, NoSuchAlgorithmException {
+        KeyGenerator kgen = KeyGenerator.getInstance("AES");
+        SecureRandom random=SecureRandom.getInstance("SHA1PRNG");
+        kgen.init(256, random);
+        Key key=kgen.generateKey();
+        System.out.println(key.getFormat());
+        System.out.println(key.getAlgorithm());
     }
 }

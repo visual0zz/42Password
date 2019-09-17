@@ -18,7 +18,6 @@
         tools:srcCompat="@drawable/avata11" />
 
     <ImageView
-        android:id="@+id/guideline_image"
         android:layout_width="0dp"
         android:layout_height="1dp"
         app:layout_constraintBottom_toBottomOf="parent"

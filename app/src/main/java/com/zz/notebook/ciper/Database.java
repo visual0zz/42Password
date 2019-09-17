@@ -1,4 +1,6 @@
 package com.zz.notebook.ciper;
+import com.zz.notebook.util.Bash;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -47,7 +49,7 @@ public class Database {
      * 读取或者新建数据库用于储存数据
      * @param xmlDatabaseFile 用于储存数据的数据库文件
      */
-    Database(File xmlDatabaseFile,byte[] masterkey) throws DatabaseException, WrongMasterPasswordException {
+    public Database(File xmlDatabaseFile,byte[] masterkey) throws DatabaseException, WrongMasterPasswordException {
         try {
             this.databaseFile =xmlDatabaseFile;
             if(xmlDatabaseFile==null)
@@ -60,12 +62,16 @@ public class Database {
                 initNewDatabase(masterkey,true);
                 saveDataToFile(hash(salt,masterkey));
             }
-        } catch (NoSuchPaddingException | NoSuchAlgorithmException | ParserConfigurationException | TransformerException | BadPaddingException | IllegalBlockSizeException e) {
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException | ParserConfigurationException | TransformerException | IllegalBlockSizeException e) {
             e.printStackTrace();
             throw new Database.UnfixableDatabaseException("建立数据库时发生不可恢复错误");
         }
         catch (IOException|SAXException|InvalidKeyException|NullPointerException e){
+            e.printStackTrace();
             throw new DatabaseException("数据库文件读取失败",e);
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+            throw new WrongMasterPasswordException("密码错误");
         }
     }
 
@@ -93,9 +99,12 @@ public class Database {
         }
         salt=hexToBytes(salt_node.getTextContent());
         byte[] master=hexToBytes(master_node.getTextContent());
+        logger.info("解密用的盐="+bytesToHex(salt));
+        logger.info("解密用的密钥="+bytesToHex(masterkey));
+        logger.info("解密用的哈希="+bytesToHex(hash(salt,masterkey)));
         cipherProvider=new CipherProvider(hash(salt,masterkey),null);//解密之前不知道randomkey
         byte[]master_data=cipherProvider.getCipherMaster(Cipher.DECRYPT_MODE).doFinal(master);//解码文件头
-//        System.out.println("解密后master_data="+bytesToHex(master_data));//todo delete
+        logger.info("解密后master_data="+bytesToHex(master_data));//todo delete
         //{//进行master_data的切分 master_data= salt+randomkey+hash(masterkey)
             byte[] salt_inner=new byte[aes_key_length];
             byte[] randomkey_inner=new byte[random_bytes_length];
@@ -110,10 +119,10 @@ public class Database {
                     hashmasterkey_inner[i-aes_key_length-random_bytes_length]=master_data[i];
             }
         //}
-//        System.out.println("解密后");//todo delete
-//        System.out.println("salt="+bytesToHex(salt_inner));
-//        System.out.println("randomkey="+bytesToHex(randomkey_inner));
-//        System.out.println("hash_masterkey="+bytesToHex(hashmasterkey_inner));
+        logger.info("解密后");//todo delete
+        logger.info("salt="+bytesToHex(salt_inner));
+        logger.info("randomkey="+bytesToHex(randomkey_inner));
+        logger.info("hash_masterkey="+bytesToHex(hashmasterkey_inner));
         if(!isEqual(salt_inner,salt)||!isEqual(hashmasterkey_inner,hash(salt,masterkey)))throw new WrongMasterPasswordException("密码错误，无法解密数据库");
         cipherProvider=new CipherProvider(hashmasterkey_inner,randomkey_inner);
         ///////////////////////////////////////开始读取数据区///////////////////////////////////////////////////////
@@ -138,6 +147,7 @@ public class Database {
                 try {
                     item.setAndDecryptData(uuid,cipherProvider,account_data);
                 } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
                     continue;//如果某一条消息解析失败，就直接忽略，跳到其他消息去
                 }
                 data.add(item);//添加account
@@ -156,20 +166,20 @@ public class Database {
      * @throws BadPaddingException
      * @throws IllegalBlockSizeException
      */
-    private void saveDataToFile(byte[] masterkey_hash) throws ParserConfigurationException, TransformerException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    private void saveDataToFile(byte[] masterkey_hash) throws ParserConfigurationException, TransformerException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, IOException {
         Document document=DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         document.setXmlStandalone(true);
         //////////////////////////////////////////////////////////////////////////
         Element root_element=document.createElement("root");
         Element salt_element=document.createElement("salt");
         Element master_element=document.createElement("master");
-//        System.out.println("加密前");//todo delete
-//        System.out.println("salt="+bytesToHex(salt));
-//        System.out.println("randomkey="+bytesToHex(cipherProvider.randomkey));
-//        System.out.println("hash_masterkey="+bytesToHex(hash(salt,masterkey)));
+        logger.info("加密前");//todo delete
+        logger.info("salt="+bytesToHex(salt));
+        logger.info("randomkey="+bytesToHex(cipherProvider.randomkey));
+        logger.info("hash_masterkey="+bytesToHex(masterkey_hash));
         byte[] master_data=concat(concat(salt,cipherProvider.randomkey),masterkey_hash);
 
-//        System.out.println("加密前master_data="+bytesToHex(master_data));//todo delete
+        logger.info("加密前master_data="+bytesToHex(master_data));//todo delete
         Cipher cipher=cipherProvider.getCipherMaster(Cipher.ENCRYPT_MODE);
         byte[] master=cipher.doFinal(master_data);
 
@@ -193,6 +203,7 @@ public class Database {
         Transformer transformer= TransformerFactory.newInstance().newTransformer();
         transformer.setOutputProperty(OutputKeys.INDENT,"yes");//进行分行，使便于阅读
         transformer.setParameter(OutputKeys.ENCODING,"utf-8");//使用utf-8编码
+        Bash.touch(databaseFile);
         transformer.transform(new DOMSource(document), new StreamResult(databaseFile));
     }
     /**
@@ -250,7 +261,7 @@ public class Database {
     public boolean saveToFile(){
         try {
             saveDataToFile(cipherProvider.masterkey_hash);
-        } catch (ParserConfigurationException | TransformerException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
+        } catch (ParserConfigurationException | TransformerException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | IOException e) {
             e.printStackTrace();
             return false;
         }

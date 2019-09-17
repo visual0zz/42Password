@@ -51,7 +51,8 @@ public class ByteArrayUtils {
         return target;
     }
     public static byte[] concat(byte[] a, byte[] b) {//数组合并
-        if(a==null||b==null)throw new InvalidParameterException("参数不能为空。");
+        if(a==null)a=new byte[0];
+        if(b==null)b=new byte[0];
 
         final int alen = a.length;
         final int blen = b.length;

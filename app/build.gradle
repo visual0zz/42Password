@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
+    android.defaultConfig.vectorDrawables.useSupportLibrary = true
     defaultConfig {
         applicationId "com.zz.notebook"
         minSdkVersion 15

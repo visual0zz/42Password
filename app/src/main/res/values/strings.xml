@@ -11,9 +11,12 @@
     <string name="action_search">Search</string>
     <string name="hint_password">password here</string>
     <string name="login">login</string>
-    <string name="login_register_hint">registe</string>
-    <string name="message_pwd_error">wrong password</string>
-    <string name="register_done_hint">done</string>
+    <string name="regist">Regist</string>
+    <string name="purge_database">forget password?</string>
+    <string name="wrong_password">Wrong Password</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm_to_purge_database">Are you sure to delete all local data??</string>
 
 
     <!--新版登录专用-->
