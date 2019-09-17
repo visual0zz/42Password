@@ -1,14 +1,9 @@
-package com.zz.notebook.ciper;
+package com.zz.notebook.database;
 
 import org.junit.After;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
 import java.io.File;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-
-import static org.junit.Assert.*;
 
 public class DatabaseTest {
     private static final String database_test_file="zz_test.xml";

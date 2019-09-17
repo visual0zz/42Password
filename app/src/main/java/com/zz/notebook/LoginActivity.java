@@ -2,7 +2,6 @@ package com.zz.notebook;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,8 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.zz.notebook.ciper.Database;
-import com.zz.notebook.ui.home.HomeFragment;
+import com.zz.notebook.database.Database;
 import com.zz.notebook.ui.home.HomeViewModel;
 import com.zz.notebook.util.Bash;
 import com.zz.notebook.util.BasicService;
@@ -21,10 +19,7 @@ import com.zz.notebook.util.BasicService;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
-import java.nio.file.AccessDeniedException;
 
-import static com.zz.notebook.ciper.ByteArrayUtils.bytesToHex;
-import static com.zz.notebook.util.BasicService.database_file_storage_path;
 import static com.zz.notebook.util.BasicService.getDatabaseFilePath;
 
 public class LoginActivity extends Activity implements View.OnClickListener {

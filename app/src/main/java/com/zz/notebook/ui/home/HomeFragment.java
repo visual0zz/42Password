@@ -1,6 +1,5 @@
 package com.zz.notebook.ui.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.zz.notebook.MainActivity;
 import com.zz.notebook.R;
-import com.zz.notebook.ciper.Database;
 
 
 public class HomeFragment extends Fragment {

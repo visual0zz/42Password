@@ -46,3 +46,11 @@ ciper这个包应该不使用任何android特性，可以在pc java上运行
     ,account_item
   ))
 * hash=sha256(salt+0x13758496+master_key)
+
+Database使用方式
+------------------------
+```
+Database db=new Database(file,password);
+//如果file不存在会新建。如果已存在会用password去解密。
+db.getAt(index);
+```

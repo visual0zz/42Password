@@ -1,4 +1,4 @@
-package com.zz.notebook.ciper;
+package com.zz.notebook.database;
 
 
 import androidx.annotation.NonNull;
@@ -11,20 +11,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.Timestamp;
 import java.sql.Time;
 import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
-import static com.zz.notebook.util.BasicService.global_encrypt_algorithm;
-import static java.lang.System.exit;
 
 /**
  * 为了适配keepass的csv输出格式 属性定义为:"Group","Title","Username","Password","URL","Notes"
@@ -32,14 +25,14 @@ import static java.lang.System.exit;
 public class AccountItem implements Serializable {//表示一条帐号记录
     private static final long serialVersionUID =
             AccountItem.class.getCanonicalName().concat(BasicService.global_serialVersionUID).hashCode();
-    UUID uid;
-    String group;
-    String title;
-    String username;
-    String url;
-    String notes;
-    PasswordProperty password;
-    long timestamp;
+    private UUID uid;
+    private String group;
+    private String title;
+    private String username;
+    private String url;
+    private String notes;
+    private PasswordProperty password;
+    private long timestamp;
 
 
     public AccountItem setGroup(String group) {
@@ -70,14 +63,11 @@ public class AccountItem implements Serializable {//表示一条帐号记录
         this.uid=uid;
         return this;
     }
-    public long getTimestamp() {
-        return timestamp;
-    }
-
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 
+    public long getTimestamp() { return timestamp;}
     public String getGroup() { return group; }
     public String getTitle() { return title; }
     public String getUsername() { return username; }

@@ -1,4 +1,4 @@
-package com.zz.notebook.ciper;
+package com.zz.notebook.database;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -6,11 +6,11 @@ import org.junit.Test;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import static com.zz.notebook.ciper.CipherService.aesKeyFromSeed;
-import static com.zz.notebook.ciper.CipherService.getRandomBytes;
-import static com.zz.notebook.ciper.CipherService.hash;
-import static com.zz.notebook.ciper.ByteArrayUtils.bytesToHex;
-import static com.zz.notebook.ciper.ByteArrayUtils.isEqual;
+import static com.zz.notebook.database.CipherService.aesKeyFromSeed;
+import static com.zz.notebook.database.CipherService.getRandomBytes;
+import static com.zz.notebook.database.CipherService.hash;
+import static com.zz.notebook.database.ByteArrayUtils.bytesToHex;
+import static com.zz.notebook.database.ByteArrayUtils.isEqual;
 
 public class CipherServiceTest {
     @Test

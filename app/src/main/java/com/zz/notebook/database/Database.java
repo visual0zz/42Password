@@ -1,4 +1,4 @@
-package com.zz.notebook.ciper;
+package com.zz.notebook.database;
 import com.zz.notebook.util.Bash;
 
 import org.w3c.dom.Document;
@@ -8,6 +8,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -27,17 +28,17 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import static com.zz.notebook.ciper.CipherService.aes_key_length;
-import static com.zz.notebook.ciper.CipherService.getRandomBytes;
-import static com.zz.notebook.ciper.CipherService.hash;
-import static com.zz.notebook.ciper.CipherService.hash_length;
-import static com.zz.notebook.ciper.CipherService.random_bytes_length;
-import static com.zz.notebook.ciper.ByteArrayUtils.bytesToHex;
-import static com.zz.notebook.ciper.ByteArrayUtils.bytesToUUID;
-import static com.zz.notebook.ciper.ByteArrayUtils.concat;
-import static com.zz.notebook.ciper.ByteArrayUtils.hexToBytes;
-import static com.zz.notebook.ciper.ByteArrayUtils.isEqual;
-import static com.zz.notebook.ciper.ByteArrayUtils.uuidToBytes;
+import static com.zz.notebook.database.CipherService.aes_key_length;
+import static com.zz.notebook.database.CipherService.getRandomBytes;
+import static com.zz.notebook.database.CipherService.hash;
+import static com.zz.notebook.database.CipherService.hash_length;
+import static com.zz.notebook.database.CipherService.random_bytes_length;
+import static com.zz.notebook.database.ByteArrayUtils.bytesToHex;
+import static com.zz.notebook.database.ByteArrayUtils.bytesToUUID;
+import static com.zz.notebook.database.ByteArrayUtils.concat;
+import static com.zz.notebook.database.ByteArrayUtils.hexToBytes;
+import static com.zz.notebook.database.ByteArrayUtils.isEqual;
+import static com.zz.notebook.database.ByteArrayUtils.uuidToBytes;
 
 public class Database {
     Logger logger=Logger.getLogger(Database.class.getName());
@@ -140,7 +141,7 @@ public class Database {
                 }
                 for(int j=0;j<account_nodes.getLength();j++){//找data
                     Node account_node=account_nodes.item(j);
-                    if(account_node.getNodeName().equals("data"))
+                    if(account_node.getNodeName().equals("newItem"))
                         account_data=hexToBytes(account_node.getTextContent());
                 }
                 AccountItem item=new AccountItem();
@@ -190,7 +191,7 @@ public class Database {
         for(AccountItem item:data){//写入所有的账户信息条目
             Element account_element=document.createElement("account");
             Element uuid_element=document.createElement("uuid");
-            Element data_element=document.createElement("data");
+            Element data_element=document.createElement("newItem");
             data_element.setTextContent(bytesToHex(item.getEncryptedData(cipherProvider)));
             uuid_element.setTextContent(bytesToHex(uuidToBytes(item.getUid())));
             account_element.appendChild(uuid_element);
@@ -245,7 +246,6 @@ public class Database {
         }
         return result;
     }
-    public List<AccountItem> getData(){return data;}
     public AccountItem getAccountItem(UUID uuid){
         for(AccountItem item:data){
             if(item.getUid().equals(uuid))
@@ -267,5 +267,68 @@ public class Database {
         }
         return true;
     }
-    public AccountItem getAccountItem(int index){return data.get(index);}
+    public AccountItem getAccountItem(int index){
+        return data.get(data.size()-index-1);//向外暴漏的顺序与内部储存顺序反过来，使自动按时间顺序排列
+    }
+
+    public Editor getEditor(int index){
+        return new Editor(getAccountItem(index));
+    }
+    public Editor getEditor(AccountItem item){
+        return new Editor(item);
+    }
+    class Editor {
+        private Editor(AccountItem in){
+            if(in!=null){//不为空表示编辑
+                oldItem=in.getUid();//缓存旧的UUID为了最后删除旧的条目
+                newItem.assign(in);
+            }else {//编辑对象为空表示新建
+                oldItem=null;
+                newItem =new AccountItem();
+            }
+        }
+        UUID oldItem;
+        AccountItem newItem;
+
+        public void submit(){//将编辑动作实际作用到数据库
+            newItem.setUid(UUID.randomUUID());//产生新的uuid
+            newItem.setTimestamp(System.currentTimeMillis());//插入新的时间戳
+            Database.this.data.add(newItem);//插入新的
+            if(oldItem!=null)
+                Database.this.data.remove(getAccountItem(oldItem));//删除旧的
+        }
+        public String getGroup() { return newItem.getGroup(); }
+        public String getTitle() { return newItem.getTitle(); }
+        public String getUsername() { return newItem.getUsername(); }
+        public String getUrl() { return newItem.getUrl(); }
+        public String getNotes() { return newItem.getNotes(); }
+        public Serializable getPassword() {
+            return newItem.getPassword().get(Database.this.cipherProvider);
+        }
+
+        public Editor setGroup(String group) {
+            newItem.setGroup(group);
+            return this;
+        }
+        public Editor setTitle(String title) {
+            newItem.setTitle(title);
+            return this;
+        }
+        public Editor setUsername(String username) {
+            newItem.setUsername(username);
+            return this;
+        }
+        public Editor setUrl(String url) {
+            newItem.setUrl(url);
+            return this;
+        }
+        public Editor setNotes(String notes) {
+            newItem.setNotes(notes);
+            return this;
+        }
+        public Editor setPassword(Serializable password) {
+            newItem.setPassword(new PasswordProperty<>(password,Database.this.cipherProvider));
+            return this;
+        }
+    }
 }

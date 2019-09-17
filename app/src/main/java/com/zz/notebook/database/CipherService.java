@@ -1,9 +1,6 @@
-package com.zz.notebook.ciper;
-
-import android.provider.Settings;
+package com.zz.notebook.database;
 
 import java.security.Key;
-import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -13,9 +10,9 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
-import static com.zz.notebook.ciper.ByteArrayUtils.bytesToHex;
-import static com.zz.notebook.ciper.ByteArrayUtils.concat;
-import static com.zz.notebook.ciper.ByteArrayUtils.int2byte;
+import static com.zz.notebook.database.ByteArrayUtils.bytesToHex;
+import static com.zz.notebook.database.ByteArrayUtils.concat;
+import static com.zz.notebook.database.ByteArrayUtils.int2byte;
 
 public class CipherService {
     public static Logger logger=Logger.getLogger(CipherService.class.getName());

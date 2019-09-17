@@ -1,4 +1,4 @@
-package com.zz.notebook.ciper;
+package com.zz.notebook.database;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 import javax.crypto.spec.IvParameterSpec;
 
-import static com.zz.notebook.ciper.ByteArrayUtils.bytesToHex;
+import static com.zz.notebook.database.ByteArrayUtils.bytesToHex;
 
 public class CipherProviderTest {
 

@@ -1,10 +1,9 @@
-package com.zz.notebook.ciper;
+package com.zz.notebook.database;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -12,13 +11,12 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 
-import static com.zz.notebook.ciper.ByteArrayUtils.bytesToHex;
-import static com.zz.notebook.ciper.CipherService.aesKeyFromSeed;
-import static com.zz.notebook.ciper.CipherService.getIvFromSeed;
+import static com.zz.notebook.database.ByteArrayUtils.bytesToHex;
+import static com.zz.notebook.database.CipherService.aesKeyFromSeed;
+import static com.zz.notebook.database.CipherService.getIvFromSeed;
 import static com.zz.notebook.util.BasicService.global_encrypt_algorithm;
-import static com.zz.notebook.ciper.ByteArrayUtils.concat;
-import static com.zz.notebook.ciper.ByteArrayUtils.int2byte;
-import static com.zz.notebook.ciper.ByteArrayUtils.uuidToBytes;
+import static com.zz.notebook.database.ByteArrayUtils.concat;
+import static com.zz.notebook.database.ByteArrayUtils.uuidToBytes;
 
 /**
  * 用于生成不同对象的不同加密密钥的密钥生成器，根据全局密钥设定，生成具体的加密密钥
