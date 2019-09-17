@@ -10,10 +10,9 @@ import java.lang.reflect.Method;
 import java.security.Key;
 import java.util.UUID;
 
-import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 
-import static com.zz.notebook.util.ByteArrayUtils.bytesToHex;
+import static com.zz.notebook.ciper.ByteArrayUtils.bytesToHex;
 
 public class CipherProviderTest {
 

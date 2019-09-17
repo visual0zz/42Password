@@ -3,13 +3,6 @@ package com.zz.notebook.ciper;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
-import static com.zz.notebook.ciper.CipherService.getRandomBytes;
-import static com.zz.notebook.ciper.CipherService.hash;
-import static com.zz.notebook.util.ByteArrayUtils.concat;
-import static org.junit.Assert.*;
-
 public class PasswordPropertyTest {
 
     @Test

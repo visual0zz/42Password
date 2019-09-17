@@ -30,12 +30,12 @@ import static com.zz.notebook.ciper.CipherService.getRandomBytes;
 import static com.zz.notebook.ciper.CipherService.hash;
 import static com.zz.notebook.ciper.CipherService.hash_length;
 import static com.zz.notebook.ciper.CipherService.random_bytes_length;
-import static com.zz.notebook.util.ByteArrayUtils.bytesToHex;
-import static com.zz.notebook.util.ByteArrayUtils.bytesToUUID;
-import static com.zz.notebook.util.ByteArrayUtils.concat;
-import static com.zz.notebook.util.ByteArrayUtils.hexToBytes;
-import static com.zz.notebook.util.ByteArrayUtils.isEqual;
-import static com.zz.notebook.util.ByteArrayUtils.uuidToBytes;
+import static com.zz.notebook.ciper.ByteArrayUtils.bytesToHex;
+import static com.zz.notebook.ciper.ByteArrayUtils.bytesToUUID;
+import static com.zz.notebook.ciper.ByteArrayUtils.concat;
+import static com.zz.notebook.ciper.ByteArrayUtils.hexToBytes;
+import static com.zz.notebook.ciper.ByteArrayUtils.isEqual;
+import static com.zz.notebook.ciper.ByteArrayUtils.uuidToBytes;
 
 public class Database {
     Logger logger=Logger.getLogger(Database.class.getName());

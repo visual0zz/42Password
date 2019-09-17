@@ -8,12 +8,12 @@ import org.junit.Test;
 import java.util.UUID;
 
 import static com.zz.notebook.ciper.CipherService.getRandomBytes;
-import static com.zz.notebook.util.ByteArrayUtils.byte2long;
-import static com.zz.notebook.util.ByteArrayUtils.bytesToHex;
-import static com.zz.notebook.util.ByteArrayUtils.bytesToUUID;
-import static com.zz.notebook.util.ByteArrayUtils.hexToBytes;
-import static com.zz.notebook.util.ByteArrayUtils.long2byte;
-import static com.zz.notebook.util.ByteArrayUtils.uuidToBytes;
+import static com.zz.notebook.ciper.ByteArrayUtils.byte2long;
+import static com.zz.notebook.ciper.ByteArrayUtils.bytesToHex;
+import static com.zz.notebook.ciper.ByteArrayUtils.bytesToUUID;
+import static com.zz.notebook.ciper.ByteArrayUtils.hexToBytes;
+import static com.zz.notebook.ciper.ByteArrayUtils.long2byte;
+import static com.zz.notebook.ciper.ByteArrayUtils.uuidToBytes;
 
 public class ByteArrayUtilsTest {
 

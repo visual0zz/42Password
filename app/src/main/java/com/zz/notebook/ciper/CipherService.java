@@ -7,10 +7,8 @@ import java.security.SecureRandom;
 
 import javax.crypto.KeyGenerator;
 
-import static com.zz.notebook.util.ByteArrayUtils.bytesToHex;
-import static com.zz.notebook.util.ByteArrayUtils.concat;
-import static com.zz.notebook.util.ByteArrayUtils.int2byte;
-import static java.lang.System.exit;
+import static com.zz.notebook.ciper.ByteArrayUtils.concat;
+import static com.zz.notebook.ciper.ByteArrayUtils.int2byte;
 
 public class CipherService {
 

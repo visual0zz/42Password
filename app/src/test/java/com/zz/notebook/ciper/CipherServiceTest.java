@@ -9,8 +9,8 @@ import java.security.SecureRandom;
 import static com.zz.notebook.ciper.CipherService.aesKeyFromSeed;
 import static com.zz.notebook.ciper.CipherService.getRandomBytes;
 import static com.zz.notebook.ciper.CipherService.hash;
-import static com.zz.notebook.util.ByteArrayUtils.bytesToHex;
-import static com.zz.notebook.util.ByteArrayUtils.isEqual;
+import static com.zz.notebook.ciper.ByteArrayUtils.bytesToHex;
+import static com.zz.notebook.ciper.ByteArrayUtils.isEqual;
 
 public class CipherServiceTest {
     @Test

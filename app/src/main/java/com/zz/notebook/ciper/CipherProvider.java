@@ -13,10 +13,9 @@ import javax.crypto.spec.IvParameterSpec;
 
 import static com.zz.notebook.ciper.CipherService.aesKeyFromSeed;
 import static com.zz.notebook.util.BasicService.global_encrypt_algorithm;
-import static com.zz.notebook.util.ByteArrayUtils.bytesToHex;
-import static com.zz.notebook.util.ByteArrayUtils.concat;
-import static com.zz.notebook.util.ByteArrayUtils.int2byte;
-import static com.zz.notebook.util.ByteArrayUtils.uuidToBytes;
+import static com.zz.notebook.ciper.ByteArrayUtils.concat;
+import static com.zz.notebook.ciper.ByteArrayUtils.int2byte;
+import static com.zz.notebook.ciper.ByteArrayUtils.uuidToBytes;
 
 /**
  * 用于生成不同对象的不同加密密钥的密钥生成器，根据全局密钥设定，生成具体的加密密钥

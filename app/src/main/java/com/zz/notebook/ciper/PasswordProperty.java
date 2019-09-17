@@ -3,7 +3,6 @@ package com.zz.notebook.ciper;
 import androidx.annotation.NonNull;
 
 import com.zz.notebook.util.BasicService;
-import com.zz.notebook.util.ByteArrayUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,7 +10,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.security.Key;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;

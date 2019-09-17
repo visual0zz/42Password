@@ -1,7 +1,5 @@
-package com.zz.notebook.ui.gallery;
+package com.zz.notebook.ui.test;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class TestViewModel extends ViewModel {

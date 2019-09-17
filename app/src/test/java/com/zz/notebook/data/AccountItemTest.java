@@ -2,15 +2,14 @@ package com.zz.notebook.data;
 
 import com.zz.notebook.ciper.AccountItem;
 import com.zz.notebook.ciper.CipherProvider;
-import com.zz.notebook.util.ByteArrayUtils;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.security.InvalidKeyException;
 
-import static com.zz.notebook.util.ByteArrayUtils.bytesToUUID;
-import static com.zz.notebook.util.ByteArrayUtils.uuidToBytes;
+import static com.zz.notebook.ciper.ByteArrayUtils.bytesToUUID;
+import static com.zz.notebook.ciper.ByteArrayUtils.uuidToBytes;
 
 public class AccountItemTest {
     @Test
