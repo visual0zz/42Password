@@ -9,6 +9,7 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
 import java.security.InvalidKeyException;
+import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -292,17 +293,18 @@ public class Database {
         UUID oldItem;
         AccountItem newItem;
 
-        public void submit(){//将编辑动作实际作用到数据库
-            if(finished)return;
+        public Editor submit(){//将编辑动作实际作用到数据库
+            if(finished)throw new InvalidParameterException("Editor只能使用一次，一旦提交，其他操作都无效");
             newItem.setUid(UUID.randomUUID());//产生新的uuid
             newItem.setTimestamp(System.currentTimeMillis());//插入新的时间戳
             Database.this.data.add(newItem);//插入新的
             if(oldItem!=null)
                 Database.this.data.remove(getAccountItem(oldItem));//删除旧的
             finished=true;
+            return new Editor(newItem);//将新插入的对象对应的editor返回，以用于后续操作
         }
         public void delete(){//将Editor对应的条目删除
-            if(finished)return;
+            if(finished)throw new InvalidParameterException("Editor只能使用一次，一旦提交，其他操作都无效");
             if(oldItem!=null)
                 Database.this.data.remove(getAccountItem(oldItem));//删除旧的
             finished=true;

@@ -25,9 +25,13 @@ public class PasswordProperty implements Serializable {//表示一个密码,平�
     byte[] data;
     public  String get(CipherProvider provider){
         try {
+            if(data==null)return "";
             ByteArrayInputStream stream=new ByteArrayInputStream(provider.getInnerCipher(Cipher.DECRYPT_MODE).doFinal(data));
             String plain=(String)new ObjectInputStream(stream).readObject();
-            return plain;
+            if(plain==null)
+                return "";
+            else
+                return plain;
         } catch (IOException | BadPaddingException | IllegalBlockSizeException | ClassNotFoundException e) {
             e.printStackTrace();
             throw new Database.UnfixableDatabaseException("密码模块发生内部错误");

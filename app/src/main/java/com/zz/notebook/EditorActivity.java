@@ -1,5 +1,6 @@
 package com.zz.notebook;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,6 +24,7 @@ public class EditorActivity extends AppCompatActivity {
     EditText urlView;
     EditText notesView;
     EditText titleView;
+    EditText passwordView;
 
     Button submit_edit_button;
     Button delete_button;
@@ -35,11 +37,11 @@ public class EditorActivity extends AppCompatActivity {
         update();
     }
 
-    public static void edit(Context from,Database db,int index){//使用index<0表示新建
+    public static void edit(Activity from, Database db, int index){//使用index<0表示新建
         if(index<0) editor=db.getEditor(null);
         else editor=db.getEditor(index);
         Intent intent=new Intent(from,EditorActivity.class);
-        from.startActivity(intent);
+        from.startActivityForResult(intent,0);
     }
 
     private View.OnClickListener onCancel= view -> {
@@ -53,7 +55,8 @@ public class EditorActivity extends AppCompatActivity {
             editor.setNotes(notesView.getText().toString());
             editor.setUsername(accountView.getText().toString());
             editor.setUrl(urlView.getText().toString());
-            editor.submit();
+            editor.setPassword(passwordView.getText().toString());
+            editor=editor.submit();
             intoShow();
         },null);
     };
@@ -89,11 +92,13 @@ public class EditorActivity extends AppCompatActivity {
             accountView.setEnabled(true);
             urlView.setEnabled(true);
             notesView.setEnabled(true);
+            passwordView.setEnabled(true);
         }else {//显示模式就禁止编辑
             titleView.setEnabled(false);
             accountView.setEnabled(false);
             urlView.setEnabled(false);
             notesView.setEnabled(false);
+            passwordView.setEnabled(false);
         }
 
         if(editing){
@@ -112,6 +117,7 @@ public class EditorActivity extends AppCompatActivity {
         accountView=findViewById(R.id.editor_account);
         urlView=findViewById(R.id.editor_url);
         notesView=findViewById(R.id.editor_notes);
+        passwordView=findViewById(R.id.editor_password);
         submit_edit_button=findViewById(R.id.editor_button_edit);
         delete_button=findViewById(R.id.editor_button_delete);
         cancel_button=findViewById(R.id.editor_button_cancel);
@@ -122,6 +128,8 @@ public class EditorActivity extends AppCompatActivity {
         accountView.setText(editor.getAccountName());
         titleView.setText(editor.getTitle());
         notesView.setText(editor.getNotes());
+        passwordView.setText(editor.getPassword());
+
     }
     public void MessageBox(String message, DialogInterface.OnClickListener onOk, DialogInterface.OnClickListener onCancel){
         AlertDialog.Builder builder=new AlertDialog.Builder(this);

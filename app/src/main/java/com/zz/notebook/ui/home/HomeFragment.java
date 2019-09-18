@@ -26,7 +26,8 @@ public class HomeFragment extends Fragment {
 
         RecyclerView recyclerView = root.findViewById(R.id.note_list_view);//加载主列表
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));//设置列表为线性布局
-        recyclerView.setAdapter(new HomeListAdapter(homeViewModel,this));
+        HomeListAdapter adapter=new HomeListAdapter(homeViewModel,this);
+        recyclerView.setAdapter(adapter);
 
         activity= (MainActivity) getActivity();
 
@@ -35,6 +36,7 @@ public class HomeFragment extends Fragment {
             homeViewModel.doSearch(str);//调用数据层进行搜索
         };
         activity.fab.show();
+        update= adapter::notifyDataSetChanged;
         return root;
     }
 
@@ -46,6 +48,9 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         activity.fab.hide();
     }
-
+    static Runnable update;
+    public static void update(){
+        if(update!=null)update.run();
+    }
 }
 

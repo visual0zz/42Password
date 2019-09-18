@@ -1,5 +1,6 @@
 package com.zz.notebook;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -17,6 +18,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.zz.notebook.ui.home.HomeFragment;
 import com.zz.notebook.ui.home.HomeViewModel;
 import com.zz.notebook.ui.home.SearchActionProvider;
 import com.zz.notebook.util.BasicService;
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         fab = findViewById(R.id.fab);;
         fab.setOnClickListener(view ->{//悬空的 "+" 按钮
-            EditorActivity.edit(getApplicationContext(), HomeViewModel.database,-1);
+            EditorActivity.edit(this, HomeViewModel.database,-1);
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -117,5 +119,11 @@ public class MainActivity extends AppCompatActivity {
     private MenuItem searchButton;
     public void showSearchButton(boolean show){
         if(searchButton!=null)searchButton.setVisible(show);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        HomeFragment.update();
     }
 }

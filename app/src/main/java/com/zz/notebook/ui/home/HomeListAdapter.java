@@ -45,7 +45,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.VH>{
         holder.account.setText(note.getAccountName());
         holder.avatar.setImageDrawable(BasicService.getAvatar(note.getBirthmark()));
         holder.time.setText(note.getTimeString());
-        holder.itemView.setOnClickListener(v->{EditorActivity.edit(fragment.getContext(),HomeViewModel.database,position);});
+        holder.itemView.setOnClickListener(v->{EditorActivity.edit(fragment.getActivity(),HomeViewModel.database,position);});
     }
 
     @Override
