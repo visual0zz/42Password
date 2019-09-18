@@ -6,9 +6,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -31,6 +36,8 @@ public class EditorActivity extends AppCompatActivity {
     Button submit_edit_button;
     Button delete_button;
     Button cancel_button;
+
+    CheckBox show_pass;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +55,12 @@ public class EditorActivity extends AppCompatActivity {
 
     private View.OnClickListener onCancel= view -> {
         if(!editing)finish();//如果是查看模式，没必要提醒，直接退出就好
-        else MessageBox("确定要退出吗?",(dialogInterface, i) -> {
-            finish();
+        else MessageBox(getResources().getString(R.string.editor_giveup_confirm),(dialogInterface, i) -> {
+            intoShow();
         },null);
     };
     private View.OnClickListener onSubmit= view -> {
-        MessageBox("确定要保存修改吗?",(dialogInterface, i) -> {
+        MessageBox(getResources().getString(R.string.editor_save_confirm),(dialogInterface, i) -> {
             editor.setTitle(titleView.getText().toString());
             editor.setNotes(notesView.getText().toString());
             editor.setUsername(accountView.getText().toString());
@@ -65,7 +72,7 @@ public class EditorActivity extends AppCompatActivity {
         },null);
     };
     private View.OnClickListener onDelete= view -> {
-        MessageBox("确定要删除吗?",(dialogInterface, i) -> {
+        MessageBox(getResources().getString(R.string.editor_delete_confirm),(dialogInterface, i) -> {
             editor.delete();
             finish();
         },null);
@@ -115,7 +122,8 @@ public class EditorActivity extends AppCompatActivity {
     }
     private void initUI(){//初始化UI状态
         if(editor.isNew())editing=true;
-            else editing=false;
+        else editing=false;
+
         titleView=findViewById(R.id.editor_title);
         accountView=findViewById(R.id.editor_account);
         urlView=findViewById(R.id.editor_url);
@@ -137,6 +145,14 @@ public class EditorActivity extends AppCompatActivity {
         passwordView.setText(editor.getPassword());
         timeView.setText(editor.getTimeString());
 
+        show_pass=findViewById(R.id.editor_showpass);
+        show_pass.setOnCheckedChangeListener((compoundButton, b) -> {
+            if(b){
+                passwordView.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            }else{
+                passwordView.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            }
+        });
     }
     public void MessageBox(String message, DialogInterface.OnClickListener onOk, DialogInterface.OnClickListener onCancel){
         AlertDialog.Builder builder=new AlertDialog.Builder(this);

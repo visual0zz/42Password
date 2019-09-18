@@ -29,5 +29,8 @@
     <string name="editor_colomn_url">网址:</string>
     <string name="hint_repeat_password">再次输入密码…</string>
     <string name="save">保存</string>
+    <string name="editor_giveup_confirm">放弃所有更改并退出编辑?</string>
+    <string name="editor_save_confirm">保存修改并退出编辑?</string>
+    <string name="editor_delete_confirm">确定要删除吗?</string>
 
 </resources>
