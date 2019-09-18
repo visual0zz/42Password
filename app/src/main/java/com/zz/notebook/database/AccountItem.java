@@ -28,7 +28,7 @@ public class AccountItem implements Serializable {//表示一条帐号记录
     private UUID uid;
     private String group;
     private String title;
-    private String username;
+    private String account;
     private String url;
     private String notes;
     private PasswordProperty password;
@@ -43,8 +43,8 @@ public class AccountItem implements Serializable {//表示一条帐号记录
         this.title = title;
         return this;
     }
-    public AccountItem setUsername(String username) {
-        this.username = username;
+    public AccountItem setAccount(String account) {
+        this.account = account;
         return this;
     }
     public AccountItem setUrl(String url) {
@@ -70,7 +70,7 @@ public class AccountItem implements Serializable {//表示一条帐号记录
     public long getTimestamp() { return timestamp;}
     public String getGroup() { return group; }
     public String getTitle() { return title; }
-    public String getAccountName() { return username; }
+    public String getAccountName() { return account; }
     public String getUrl() { return url; }
     public String getNotes() { return notes; }
     public PasswordProperty getPassword() { return password; }
@@ -81,7 +81,7 @@ public class AccountItem implements Serializable {//表示一条帐号记录
 
     public AccountItem(){//构造新的帐号记录
         uid=UUID.randomUUID();
-        group=title=url=username=notes="";
+        group=title=url= account =notes="";
         password=new PasswordProperty();
         timestamp=System.currentTimeMillis();//获得当前时间记录为时间戳
     }
@@ -131,7 +131,7 @@ public class AccountItem implements Serializable {//表示一条帐号记录
     //    UUID uid;
     //    String group;
     //    String title;
-    //    String username;
+    //    String account;
     //    String url;
     //    String notes;
     //    PasswordProperty password;
@@ -144,7 +144,7 @@ public class AccountItem implements Serializable {//表示一条帐号记录
         uid=in.uid;
         group=in.group;
         title=in.title;
-        username=in.username;
+        account =in.account;
         url=in.url;
         notes=in.notes;
         password=in.password;
@@ -165,10 +165,10 @@ public class AccountItem implements Serializable {//表示一条帐号记录
     @NonNull
     @Override
     public String toString() {
-        return "{uid="+uid+"\tgroup="+group+"\ttitle="+title+"\tusername="+username+"\tpassword="+password+"\turl="+url+"\tnotes="+notes+"}";
+        return "{uid="+uid+"\tgroup="+group+"\ttitle="+title+"\taccount="+ account +"\tpassword="+password+"\turl="+url+"\tnotes="+notes+"}";
     }
     public String getBirthmark(){
-        return notes+username+title+url;
+        return notes+ account +title+url;
     }
     public String getAvatarSeed(){return notes+title;}
     public String getTimeString(){

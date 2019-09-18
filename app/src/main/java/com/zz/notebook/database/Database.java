@@ -337,7 +337,7 @@ public class Database {
             return this;
         }
         public Editor setUsername(String username) {
-            newItem.setUsername(username);
+            newItem.setAccount(username);
             return this;
         }
         public Editor setUrl(String url) {

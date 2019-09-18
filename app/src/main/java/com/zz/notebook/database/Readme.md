@@ -9,7 +9,7 @@ ciper这个包应该不使用任何android特性，可以在pc java上运行
         UUID uid;
         String group;
         String title;
-        String username;
+        String account;
         String url;
         String notes;
         PasswordProperty password{
