@@ -4,12 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.zz.notebook.ui.LocusPassWordView
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
-
     <Button
         android:id="@+id/test_button1"
         android:layout_width="match_parent"

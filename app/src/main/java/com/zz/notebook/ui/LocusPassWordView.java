@@ -16,7 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by Administrator on 2017-10-29.
+ * 别处找来的一个实现手势解锁的工具，暂时不知道怎么用，就先放到这儿
  */
 
 public class LocusPassWordView extends View {
