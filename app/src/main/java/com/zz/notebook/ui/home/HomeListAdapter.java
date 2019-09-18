@@ -13,8 +13,6 @@ import com.zz.notebook.R;
 import com.zz.notebook.database.AccountItem;
 import com.zz.notebook.util.BasicService;
 
-import static com.zz.notebook.util.BasicService.toast;
-
 public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.VH>{
     //② 创建ViewHolder
     public static class VH extends RecyclerView.ViewHolder{
@@ -44,7 +42,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.VH>{
     public void onBindViewHolder(VH holder, int position) {
         AccountItem note=dataModel.getAt(position);
         holder.app_name.setText(note.getTitle());
-        holder.account.setText(note.getUsername());
+        holder.account.setText(note.getAccountName());
         holder.avatar.setImageDrawable(BasicService.getAvatar(note.getBirthmark()));
         holder.time.setText(note.getTimeString());
         holder.itemView.setOnClickListener(v->{EditorActivity.edit(fragment.getContext(),HomeViewModel.database,position);});

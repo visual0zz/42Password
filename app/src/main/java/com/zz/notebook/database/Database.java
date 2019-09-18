@@ -8,7 +8,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -317,10 +316,10 @@ public class Database {
         }
         public String getGroup() { return newItem.getGroup(); }
         public String getTitle() { return newItem.getTitle(); }
-        public String getUsername() { return newItem.getUsername(); }
+        public String getAccountName() { return newItem.getAccountName(); }
         public String getUrl() { return newItem.getUrl(); }
         public String getNotes() { return newItem.getNotes(); }
-        public Serializable getPassword() {
+        public String getPassword() {
             return newItem.getPassword().get(Database.this.cipherProvider);
         }
 
@@ -344,8 +343,8 @@ public class Database {
             newItem.setNotes(notes);
             return this;
         }
-        public <T extends Serializable> Editor setPassword(T password) {
-            newItem.setPassword(new PasswordProperty<>(password,Database.this.cipherProvider));
+        public Editor setPassword(String password) {
+            newItem.setPassword(new PasswordProperty(password,Database.this.cipherProvider));
             return this;
         }
         public boolean isFinished(){

@@ -1,22 +1,32 @@
 package com.zz.notebook;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.zz.notebook.database.Database;
-
-import java.util.UUID;
+import com.zz.notebook.util.BasicService;
 
 public class EditorActivity extends AppCompatActivity {
 
     private static Database.Editor editor;
     boolean editing;
+    EditText accountView;
+    EditText urlView;
+    EditText notesView;
+    EditText titleView;
+
+    Button submit_edit_button;
+    Button delete_button;
+    Button cancel_button;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,16 +43,28 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     private View.OnClickListener onCancel= view -> {
-
+        MessageBox("确定要退出吗?",(dialogInterface, i) -> {
+            finish();
+        },null);
     };
     private View.OnClickListener onSubmit= view -> {
-
+        MessageBox("确定要保存修改吗?",(dialogInterface, i) -> {
+            editor.setTitle(titleView.getText().toString());
+            editor.setNotes(notesView.getText().toString());
+            editor.setUsername(accountView.getText().toString());
+            editor.setUrl(urlView.getText().toString());
+            editor.submit();
+            intoShow();
+        },null);
     };
     private View.OnClickListener onDelete= view -> {
-
+        MessageBox("确定要删除吗?",(dialogInterface, i) -> {
+            editor.delete();
+            finish();
+        },null);
     };
     private View.OnClickListener onEditor= view -> {
-
+        intoEdit();
     };
 
     private void intoShow(){//编辑器进入展示模式
@@ -62,9 +84,50 @@ public class EditorActivity extends AppCompatActivity {
         if(editing)this.setTitle(R.string.edit);
         else this.setTitle(R.string.app_name);
 
+        if(editing){//如果是编辑状态就开放所有编辑框的编辑权限
+            titleView.setEnabled(true);
+            accountView.setEnabled(true);
+            urlView.setEnabled(true);
+            notesView.setEnabled(true);
+        }else {//显示模式就禁止编辑
+            titleView.setEnabled(false);
+            accountView.setEnabled(false);
+            urlView.setEnabled(false);
+            notesView.setEnabled(false);
+        }
+
+        if(editing){
+            submit_edit_button.setText(R.string.confirm);
+            submit_edit_button.setOnClickListener(onSubmit);
+        }else {
+            submit_edit_button.setText(R.string.edit);
+            submit_edit_button.setOnClickListener(onEditor);
+        }
+
     }
     private void initUI(){//初始化UI状态
         if(editor.isNew())editing=true;
-        else editing=false;
+            else editing=false;
+        titleView=findViewById(R.id.editor_title);
+        accountView=findViewById(R.id.editor_account);
+        urlView=findViewById(R.id.editor_url);
+        notesView=findViewById(R.id.editor_notes);
+        submit_edit_button=findViewById(R.id.editor_button_edit);
+        delete_button=findViewById(R.id.editor_button_delete);
+        cancel_button=findViewById(R.id.editor_button_cancel);
+        cancel_button.setOnClickListener(onCancel);
+        delete_button.setOnClickListener(onDelete);
+
+        urlView.setText(editor.getUrl());
+        accountView.setText(editor.getAccountName());
+        titleView.setText(editor.getTitle());
+        notesView.setText(editor.getNotes());
+    }
+    public void MessageBox(String message, DialogInterface.OnClickListener onOk, DialogInterface.OnClickListener onCancel){
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.confirm,onOk);
+        builder.setNegativeButton(R.string.cancel,onCancel);
+        builder.show();
     }
 }

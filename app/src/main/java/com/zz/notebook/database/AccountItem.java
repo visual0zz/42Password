@@ -70,7 +70,7 @@ public class AccountItem implements Serializable {//表示一条帐号记录
     public long getTimestamp() { return timestamp;}
     public String getGroup() { return group; }
     public String getTitle() { return title; }
-    public String getUsername() { return username; }
+    public String getAccountName() { return username; }
     public String getUrl() { return url; }
     public String getNotes() { return notes; }
     public PasswordProperty getPassword() { return password; }

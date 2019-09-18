@@ -40,6 +40,10 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         setupUI();
     }
     @Override
+    public void onResume(){
+        super.onResume();
+    }
+    @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.login_purgedata_action:

@@ -1,7 +1,10 @@
 package com.zz.notebook.util;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 import android.widget.Toast;
 
 import com.zz.notebook.R;
@@ -86,13 +89,13 @@ public final class BasicService {
         R.drawable.avata49,
     };//用于暂存所有的头像id
 
-    public static Drawable getAvatar(String str){
-        int index=str.hashCode();
+    public static Drawable getAvatar(String seed){
+        int index=seed.hashCode();
         if(index<0)index=index+Integer.MAX_VALUE;
         logger.info("正在尝试获得avatar["+index+"]");
         try{
             if(isWorkable()){
-                Drawable tmp=getSpecialAvatar(str);
+                Drawable tmp=getSpecialAvatar(seed);
                 if(tmp!=null)
                     return tmp;
                 else
@@ -104,6 +107,7 @@ public final class BasicService {
         logger.warning("读取avatar失败,rootContext="+rootContext);
         return null;
     }
+
     private static Drawable getSpecialAvatar(String str){//用于为知名站点添加特殊的头像，比如百度，bilibili
         return null;
     }
