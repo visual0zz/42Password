@@ -34,6 +34,7 @@ public class HomeFragment extends Fragment {
         activity.searchActionProvider= str -> {//发生搜索事件时
             homeViewModel.doSearch(str);//调用数据层进行搜索
         };
+        activity.fab.show();
         return root;
     }
 
@@ -43,6 +44,7 @@ public class HomeFragment extends Fragment {
         activity.searchActionProvider=null;//当本页面隐藏时消除搜索事件
         homeViewModel.setListAdapter(null);//清除无效的引用，防止更新已经不存在的view
         super.onDestroyView();
+        activity.fab.hide();
     }
 
 }

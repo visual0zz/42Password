@@ -36,19 +36,16 @@ import java.util.logging.Logger;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-
+    public FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {//悬空的 "+" 按钮
-            @Override
-            public void onClick(View view) {
-                EditorActivity.edit(getApplicationContext(), HomeViewModel.database,-1);
-            }
+        fab = findViewById(R.id.fab);;
+        fab.setOnClickListener(view ->{//悬空的 "+" 按钮
+            EditorActivity.edit(getApplicationContext(), HomeViewModel.database,-1);
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);

@@ -59,6 +59,40 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/repeat_frame"
+            android:layout_width="match_parent"
+            android:layout_height="52sp"
+            android:layout_marginLeft="24sp"
+            android:layout_marginTop="16sp"
+            android:layout_marginRight="24sp"
+            android:background="@drawable/round_text_background"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/login_password_repeat"
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16sp"
+                android:layout_marginRight="16sp"
+                android:layout_weight="1"
+                android:autofillHints=""
+                android:background="@null"
+                android:hint="@string/hint_repeat_password"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:minLines="1"
+                android:paddingLeft="4sp"
+                android:paddingRight="4sp"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/text_secondary_color"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/font_16"
+                tools:targetApi="o" />
+
+        </LinearLayout>
+
         <Button
             android:id="@+id/login_button"
             android:layout_width="match_parent"

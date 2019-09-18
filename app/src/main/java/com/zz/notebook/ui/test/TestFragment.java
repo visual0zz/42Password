@@ -35,7 +35,6 @@ public class TestFragment extends Fragment {
                 ViewModelProviders.of(this).get(TestViewModel.class);
         View root = inflater.inflate(R.layout.fragment_test, container, false);
         Button button=root.findViewById(R.id.test_button1);
-        test();
         button.setOnClickListener(view->{test();});
         return root;
     }
