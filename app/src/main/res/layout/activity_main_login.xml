@@ -32,7 +32,7 @@
             android:layout_marginLeft="24sp"
             android:layout_marginTop="16sp"
             android:layout_marginRight="24sp"
-            android:background="@drawable/bg_login_input_ok"
+            android:background="@drawable/round_text_background"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -54,7 +54,8 @@
                 android:textColor="@android:color/black"
                 android:textColorHint="@color/text_secondary_color"
                 android:textCursorDrawable="@null"
-                android:textSize="@dimen/font_16" tools:targetApi="o" />
+                android:textSize="@dimen/font_16"
+                tools:targetApi="o" />
 
         </LinearLayout>
 

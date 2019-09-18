@@ -369,7 +369,7 @@
                         android:fadingEdge="vertical"
                         android:gravity="start|top"
                         android:inputType="textMultiLine"
-                        android:minLines="8"
+                        android:minLines="2"
                         android:selectAllOnFocus="false"
                         android:singleLine="false"
                         android:textCursorDrawable="@null"
