@@ -41,23 +41,23 @@ public class AccountItem implements Serializable {//表示一条帐号记录
 
 
     public AccountItem setGroup(String group) {
-        this.group = group;
+        this.group = (group==null?"":group);
         return this;
     }
     public AccountItem setTitle(String title) {
-        this.title = title;
+        this.title = (title==null?"":title);
         return this;
     }
     public AccountItem setAccount(String account) {
-        this.account = account;
+        this.account = (account==null?"":account);
         return this;
     }
     public AccountItem setUrl(String url) {
-        this.url = url;
+        this.url = (url==null?"":url);
         return this;
     }
     public AccountItem setNotes(String notes) {
-        this.notes = notes;
+        this.notes = (notes==null?"":notes);
         return this;
     }
     public AccountItem setPassword(PasswordProperty password) {

@@ -14,7 +14,9 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 import javax.crypto.BadPaddingException;
@@ -360,6 +362,32 @@ public class Database {
         public String getTimeString(){
             return newItem.getTimeString();
         }
+        public String[] getGroups(){
+            return Database.this.getGroups();
+        }
+    }
+    public String[] getGroups(){//得到数据库中所有的组名
+        HashSet<String> result=new HashSet<>();
+        for(AccountItem item:data){
+            if(item.getGroup()!=null && !item.getGroup().equals("")){
+                result.add(item.getGroup());
+            }
+        }
+        return result.toArray(new String[1]);
+    }
+    public void renameGroup(String oldName,String newName){
+        for(AccountItem item:data){
+            if(item.getGroup().equals(oldName))
+                item.setGroup(newName);
+        }
+    }
+    public void removeGroup(String name){
+        ArrayList<AccountItem> newData=new ArrayList<>();
+        for(AccountItem item:data){
+            if(!item.getGroup().equals(name))
+                newData.add(item);
+        }
+        data=newData;
     }
     public void changePassword(byte[] newPassword){//更改数据库主密码
         salt=getRandomBytes();

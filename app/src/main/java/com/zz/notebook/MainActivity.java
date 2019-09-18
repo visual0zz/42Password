@@ -73,23 +73,24 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                logger.info("搜索栏提交了字符串="+s);
+                //logger.info("搜索栏提交了字符串="+s);
+                if(searchActionProvider!=null)searchActionProvider.doSearch(s);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {//当搜索栏变化时执行搜索操作
-                logger.info("搜索栏修改了字符串="+s);
-                if(searchActionProvider!=null)searchActionProvider.doSearch(s);
+                //logger.info("搜索栏修改了字符串="+s);
+                if(s.trim().isEmpty()&&searchActionProvider!=null)searchActionProvider.doSearch(null);
                 return false;
             }
         });
         searchView.setOnCloseListener(() -> {
-            logger.info("搜索栏关闭了");
+            //logger.info("搜索栏关闭了");
             if(searchActionProvider!=null)searchActionProvider.doSearch(null);//null表示不进行搜索，显示所有东西
             return false;
         });
-        logger.log(Level.INFO,"添加了搜索按钮");
+        //logger.log(Level.INFO,"添加了搜索按钮");
         if(searchActionProvider!=null)searchActionProvider.doSearch(null);//null表示不进行搜索，显示所有东西
         return true;
     }

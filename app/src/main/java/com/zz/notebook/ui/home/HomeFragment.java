@@ -34,6 +34,7 @@ public class HomeFragment extends Fragment {
         activity.showSearchButton(true);//显示搜索按钮
         activity.searchActionProvider= str -> {//发生搜索事件时
             homeViewModel.doSearch(str);//调用数据层进行搜索
+            adapter.notifyDataSetChanged();
         };
         activity.fab.show();
         update= adapter::notifyDataSetChanged;
