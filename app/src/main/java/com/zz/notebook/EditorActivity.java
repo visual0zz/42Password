@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ public class EditorActivity extends AppCompatActivity {
 
     private static Database.Editor editor;
     boolean editing;
+    TextView timeView;
     EditText accountView;
     EditText urlView;
     EditText notesView;
@@ -119,9 +121,12 @@ public class EditorActivity extends AppCompatActivity {
         urlView=findViewById(R.id.editor_url);
         notesView=findViewById(R.id.editor_notes);
         passwordView=findViewById(R.id.editor_password);
+        timeView=findViewById(R.id.editor_time);
+
         submit_edit_button=findViewById(R.id.editor_button_edit);
         delete_button=findViewById(R.id.editor_button_delete);
         cancel_button=findViewById(R.id.editor_button_cancel);
+
         cancel_button.setOnClickListener(onCancel);
         delete_button.setOnClickListener(onDelete);
 
@@ -130,6 +135,7 @@ public class EditorActivity extends AppCompatActivity {
         titleView.setText(editor.getTitle());
         notesView.setText(editor.getNotes());
         passwordView.setText(editor.getPassword());
+        timeView.setText(editor.getTimeString());
 
     }
     public void MessageBox(String message, DialogInterface.OnClickListener onOk, DialogInterface.OnClickListener onCancel){

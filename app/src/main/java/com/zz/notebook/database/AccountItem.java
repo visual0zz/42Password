@@ -13,6 +13,11 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.security.InvalidKeyException;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
@@ -172,8 +177,9 @@ public class AccountItem implements Serializable {//表示一条帐号记录
     }
     public String getAvatarSeed(){return notes+title;}
     public String getTimeString(){
-        Time time=new Time(timestamp);
-        return time.toString();
+        Date date=new Date(timestamp);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        return formatter.format(date);
     }
 }
 

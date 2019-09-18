@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -284,12 +286,12 @@ public class Database {
         }
         private Editor(AccountItem in){
             finished=false;
-            newItem =new AccountItem();
             if(in!=null){//不为空表示编辑
                 oldItem=in.getUid();//缓存旧的UUID为了最后删除旧的条目
-                newItem.assign(in);
+                newItem=new AccountItem(in);//新建的会有新的UUID
             }else {//编辑对象为空表示新建
                 oldItem=null;
+                newItem =new AccountItem();
             }
         }
         boolean finished;//用于限制提交之后继续操作的变量
@@ -352,11 +354,19 @@ public class Database {
             newItem.setPassword(new PasswordProperty(password,Database.this.cipherProvider));
             return this;
         }
-        public boolean isFinished(){
-            return finished;
-        }
         public boolean isNew(){
             return oldItem==null;
         }
+        public String getTimeString(){
+            return newItem.getTimeString();
+        }
+    }
+    public void changePassword(byte[] newPassword){//更改数据库主密码
+        salt=getRandomBytes();
+        cipherProvider=new CipherProvider(hash(salt,newPassword), getRandomBytes());
+        saveToFile();
+    }
+    public boolean checkPassword(byte[] password){//验证数据库主密码是否正确
+        return isEqual(cipherProvider.masterkey_hash,hash(salt,password));
     }
 }
