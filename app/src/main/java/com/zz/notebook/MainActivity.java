@@ -17,6 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.zz.notebook.ui.home.HomeViewModel;
 import com.zz.notebook.ui.home.SearchActionProvider;
 import com.zz.notebook.util.BasicService;
 
@@ -46,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {//悬空的 "+" 按钮
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                EditorActivity.edit(getApplicationContext(), HomeViewModel.database,-1);
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

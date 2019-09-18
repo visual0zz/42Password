@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.zz.notebook.EditorActivity;
 import com.zz.notebook.R;
 import com.zz.notebook.database.AccountItem;
 import com.zz.notebook.util.BasicService;
@@ -30,7 +31,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.VH>{
         }
     }
     private HomeViewModel dataModel;//暂存数据
-    public HomeListAdapter(HomeViewModel model) {
+    private HomeFragment fragment;
+    public HomeListAdapter(HomeViewModel model,HomeFragment fragment) {
+        this.fragment=fragment;
         dataModel=model;
         dataModel.setListAdapter(this);//将自己加入HomeViewModel，方便两个类沟通
         //这里两个对象的生命周期是不一致的，Adapter跟随Fragment 朝生暮死,而ViewModel长很多
@@ -44,7 +47,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.VH>{
         holder.account.setText(note.getUsername());
         holder.avatar.setImageDrawable(BasicService.getAvatar(note.getBirthmark()));
         holder.time.setText(note.getTimeString());
-        holder.itemView.setOnClickListener(v ->toast("点击了第"+position+"个按钮"));
+        holder.itemView.setOnClickListener(v->{EditorActivity.edit(fragment.getContext(),HomeViewModel.database,position);});
     }
 
     @Override

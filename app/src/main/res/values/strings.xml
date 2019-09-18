@@ -9,7 +9,7 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
     <string name="action_search">Search</string>
-    <string name="hint_password">password here</string>
+    <string name="hint_password">password here...</string>
     <string name="login">login</string>
     <string name="regist">Regist</string>
     <string name="purge_database">forget password?</string>
@@ -17,6 +17,15 @@
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="confirm_to_purge_database">Are you sure to delete all local data??</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="editor_colomn_time">Last Edit Time:</string>
+    <string name="editor_colomn_account">Account:</string>
+    <string name="editor_colomn_title">Title:</string>
+    <string name="editor_colomn_url">Url:</string>
+    <string name="editor_colomn_password">Password:</string>
+    <string name="editor_colomn_group">Group:</string>
+    <string name="editor_colomn_notes">Notes:</string>
 
 
     <!--新版登录专用-->

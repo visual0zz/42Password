@@ -26,7 +26,7 @@ public class HomeFragment extends Fragment {
 
         RecyclerView recyclerView = root.findViewById(R.id.note_list_view);//加载主列表
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));//设置列表为线性布局
-        recyclerView.setAdapter(new HomeListAdapter(homeViewModel));
+        recyclerView.setAdapter(new HomeListAdapter(homeViewModel,this));
 
         activity= (MainActivity) getActivity();
 
@@ -44,5 +44,6 @@ public class HomeFragment extends Fragment {
         homeViewModel.setListAdapter(null);//清除无效的引用，防止更新已经不存在的view
         super.onDestroyView();
     }
+
 }
 

@@ -277,15 +277,16 @@ public class Database {
     public Editor getEditor(AccountItem item){
         return new Editor(item);
     }
-    class Editor {
+
+    public class Editor {
         private Editor(AccountItem in){
             finished=false;
+            newItem =new AccountItem();
             if(in!=null){//不为空表示编辑
                 oldItem=in.getUid();//缓存旧的UUID为了最后删除旧的条目
                 newItem.assign(in);
             }else {//编辑对象为空表示新建
                 oldItem=null;
-                newItem =new AccountItem();
             }
         }
         boolean finished;//用于限制提交之后继续操作的变量
@@ -346,6 +347,12 @@ public class Database {
         public Editor setPassword(Serializable password) {
             newItem.setPassword(new PasswordProperty<>(password,Database.this.cipherProvider));
             return this;
+        }
+        public boolean isFinished(){
+            return finished;
+        }
+        public boolean isNew(){
+            return oldItem==null;
         }
     }
 }
