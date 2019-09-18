@@ -344,7 +344,7 @@ public class Database {
             newItem.setNotes(notes);
             return this;
         }
-        public Editor setPassword(Serializable password) {
+        public <T extends Serializable> Editor setPassword(T password) {
             newItem.setPassword(new PasswordProperty<>(password,Database.this.cipherProvider));
             return this;
         }

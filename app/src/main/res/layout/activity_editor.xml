@@ -31,26 +31,30 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/app_name"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/icon_time" />
 
                     <TextView
+                        android:id="@+id/editor_colomn_time"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:text="@string/editor_colomn_time"
-                        app:layout_constraintStart_toStartOf="@+id/editor_time"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/editor_icon_time"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/editor_time"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_marginBottom="24dp"
                         android:text="@string/app_name"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/editor_colomn_time"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
@@ -98,23 +102,35 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/app_name"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/icon_title" />
 
                     <TextView
+                        android:id="@+id/editor_colomn_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/editor_colomn_title"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/editor_icon_title"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
                         android:id="@+id/editor_title"
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName"
                         android:text="@string/app_name"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/editor_icon_title"
-                        app:layout_constraintTop_toTopOf="@+id/editor_icon_title" />
+                        app:layout_constraintStart_toEndOf="@+id/editor_colomn_title"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/editor_card_account"
                 android:layout_width="match_parent"
@@ -131,19 +147,34 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/app_name"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/icon_time" />
+                        app:srcCompat="@drawable/icon_username" />
 
                     <TextView
+                        android:id="@+id/editor_colomn_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/editor_colomn_account"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/editor_icon_account"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
                         android:id="@+id/editor_account"
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName"
                         android:text="@string/app_name"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/editor_icon_account"
-                        app:layout_constraintTop_toTopOf="@+id/editor_icon_account" />
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toEndOf="@+id/editor_colomn_account"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
@@ -164,23 +195,35 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/app_name"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/icon_time" />
+                        app:srcCompat="@drawable/icon_url" />
 
                     <TextView
+                        android:id="@+id/editor_colomn_url"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/editor_colomn_url"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/editor_icon_url"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
                         android:id="@+id/editor_url"
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName"
                         android:text="@string/app_name"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/editor_icon_url"
-                        app:layout_constraintTop_toTopOf="@+id/editor_icon_url" />
+                        app:layout_constraintStart_toEndOf="@+id/editor_colomn_url"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/editor_card_password"
                 android:layout_width="match_parent"
@@ -197,23 +240,92 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/app_name"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/icon_time" />
+                        app:srcCompat="@drawable/icon_password" />
 
                     <TextView
-                        android:id="@+id/editor_password"
+                        android:id="@+id/editor_colomn_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/editor_colomn_password"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/editor_icon_password"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.505" />
+
+                    <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:text="@string/app_name"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/editor_icon_password"
-                        app:layout_constraintTop_toTopOf="@+id/editor_icon_password" />
+                        app:layout_constraintStart_toEndOf="@+id/editor_colomn_password"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <Button
+                            android:id="@+id/button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Button" />
+
+                        <EditText
+                            android:id="@+id/editText5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="textPassword" />
+                    </LinearLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+            android:id="@+id/editor_card_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardBackgroundColor="@color/colorGuideLine"
+            app:cardCornerRadius="10dp">
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/editor_icon_group"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/app_name"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/icon_group" />
+
+                <TextView
+                    android:id="@+id/editor_colomn_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/editor_colomn_group"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/editor_icon_group"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/editor_group"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="@string/app_name"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/editor_colomn_group"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
                 android:id="@+id/editor_card_notes"
                 android:layout_width="match_parent"
@@ -230,52 +342,43 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/app_name"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/icon_time" />
+                        app:srcCompat="@drawable/icon_notes" />
 
                     <TextView
+                        android:id="@+id/editor_colomn_notes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/editor_colomn_notes"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/editor_icon_notes"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
                         android:id="@+id/editor_notes"
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:text="@string/app_name"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/editor_icon_notes"
-                        app:layout_constraintTop_toTopOf="@+id/editor_icon_notes" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/editor_card_group"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:cardBackgroundColor="@color/colorGuideLine"
-                app:cardCornerRadius="10dp">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:id="@+id/editor_icon_group"
-                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/app_name"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/icon_time" />
-
-                    <TextView
-                        android:id="@+id/editor_group"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:text="@string/app_name"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/account_input_bg_color"
+                        android:ems="10"
+                        android:fadingEdge="vertical"
+                        android:gravity="start|top"
+                        android:inputType="textMultiLine"
+                        android:minLines="8"
+                        android:selectAllOnFocus="false"
+                        android:singleLine="false"
+                        android:textCursorDrawable="@null"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/editor_icon_group"
-                        app:layout_constraintTop_toTopOf="@+id/editor_icon_group" />
+                        app:layout_constraintStart_toEndOf="@+id/editor_colomn_notes"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="@string/app_name" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
@@ -287,42 +390,36 @@
                 app:cardBackgroundColor="@color/colorGuideLine"
                 app:cardCornerRadius="10dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
+                    style="?android:attr/buttonBarStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <Button
+                        android:id="@+id/editor_button_edit"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:layout_weight="1"
+                        android:text="@string/edit" />
 
-                        <Button
-                            android:id="@+id/editor_button_edit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:text="@string/edit" />
+                    <Button
+                        android:id="@+id/editor_button_delete"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="112dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/delete" />
 
-                        <Button
-                            android:id="@+id/editor_button_delete"
-                            android:layout_width="112dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:text="@string/delete" />
-
-                        <Button
-                            android:id="@+id/editor_button_cancel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:text="@string/cancel" />
-                    </LinearLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <Button
+                        android:id="@+id/editor_button_cancel"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/cancel" />
+                </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
