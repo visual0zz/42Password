@@ -27,6 +27,7 @@
     <string name="editor_colomn_group">Group:</string>
     <string name="editor_colomn_notes">Notes:</string>
     <string name="hint_repeat_password">Repeat password here…</string>
+    <string name="save">Save</string>
 
 
     <!--新版登录专用-->

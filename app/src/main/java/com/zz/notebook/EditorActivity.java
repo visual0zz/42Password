@@ -45,7 +45,8 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     private View.OnClickListener onCancel= view -> {
-        MessageBox("确定要退出吗?",(dialogInterface, i) -> {
+        if(!editing)finish();//如果是查看模式，没必要提醒，直接退出就好
+        else MessageBox("确定要退出吗?",(dialogInterface, i) -> {
             finish();
         },null);
     };
@@ -57,6 +58,7 @@ public class EditorActivity extends AppCompatActivity {
             editor.setUrl(urlView.getText().toString());
             editor.setPassword(passwordView.getText().toString());
             editor=editor.submit();
+            editor.saveDatabaseToFile();
             intoShow();
         },null);
     };
@@ -80,12 +82,11 @@ public class EditorActivity extends AppCompatActivity {
         update();
     }
     private void update(){//更新UI状态
-        if(!editing && editor.isNew()){
-            finish();//新建条目没有展示界面，退出编辑后就直接退出编辑器
-            return;
+        if(editing){
+            this.setTitle(R.string.edit);
+        } else {
+            this.setTitle(R.string.app_name);
         }
-        if(editing)this.setTitle(R.string.edit);
-        else this.setTitle(R.string.app_name);
 
         if(editing){//如果是编辑状态就开放所有编辑框的编辑权限
             titleView.setEnabled(true);
@@ -101,8 +102,8 @@ public class EditorActivity extends AppCompatActivity {
             passwordView.setEnabled(false);
         }
 
-        if(editing){
-            submit_edit_button.setText(R.string.confirm);
+        if(editing){//修改编辑按钮的字和功能
+            submit_edit_button.setText(R.string.save);
             submit_edit_button.setOnClickListener(onSubmit);
         }else {
             submit_edit_button.setText(R.string.edit);
@@ -137,5 +138,10 @@ public class EditorActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.confirm,onOk);
         builder.setNegativeButton(R.string.cancel,onCancel);
         builder.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        onCancel.onClick(null);
     }
 }

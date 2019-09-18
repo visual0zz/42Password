@@ -28,5 +28,6 @@
     <string name="editor_colomn_title">网站名:</string>
     <string name="editor_colomn_url">网址:</string>
     <string name="hint_repeat_password">再次输入密码…</string>
+    <string name="save">保存</string>
 
 </resources>

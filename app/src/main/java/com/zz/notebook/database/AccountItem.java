@@ -170,6 +170,7 @@ public class AccountItem implements Serializable {//表示一条帐号记录
     public String getBirthmark(){
         return notes+username+title+url;
     }
+    public String getAvatarSeed(){return notes+title;}
     public String getTimeString(){
         Time time=new Time(timestamp);
         return time.toString();

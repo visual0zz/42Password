@@ -43,7 +43,7 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.VH>{
         AccountItem note=dataModel.getAt(position);
         holder.app_name.setText(note.getTitle());
         holder.account.setText(note.getAccountName());
-        holder.avatar.setImageDrawable(BasicService.getAvatar(note.getBirthmark()));
+        holder.avatar.setImageDrawable(BasicService.getAvatar(note.getAvatarSeed()));//设置随机头像
         holder.time.setText(note.getTimeString());
         holder.itemView.setOnClickListener(v->{EditorActivity.edit(fragment.getActivity(),HomeViewModel.database,position);});
     }

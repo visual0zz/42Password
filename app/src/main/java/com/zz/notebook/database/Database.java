@@ -279,6 +279,9 @@ public class Database {
     }
 
     public class Editor {
+        public void saveDatabaseToFile(){
+            Database.this.saveToFile();
+        }
         private Editor(AccountItem in){
             finished=false;
             newItem =new AccountItem();

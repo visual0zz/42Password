@@ -3,6 +3,7 @@ package com.zz.notebook;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +39,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         BasicService.rootContext=getApplicationContext();//将context缓存用于产生Toast消息
         setContentView(R.layout.activity_login);
         setupUI();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//如果版本支持改变状态栏颜色
+            this.getWindow().setStatusBarColor(getResources().getColor(R.color.colorAccent));
+        }
     }
     @Override
     public void onResume(){
