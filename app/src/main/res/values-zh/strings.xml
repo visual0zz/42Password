@@ -32,7 +32,7 @@
     <string name="editor_giveup_confirm">放弃所有更改并退出编辑?</string>
     <string name="editor_save_confirm">保存修改并退出编辑?</string>
     <string name="editor_delete_confirm">确定要删除吗?</string>
-    <string name="chose_group">选择分组</string>
+    <string name="chose_group">&lt;选择分组&gt;</string>
     <string name="setup_custom_group">&lt;自定义&gt;</string>
     <string name="hint_input_groupname">请输入分组名</string>
 

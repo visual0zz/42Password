@@ -408,7 +408,9 @@
         android:fadingEdge="horizontal|vertical"
         app:cardBackgroundColor="@color/text_secondary_color"
         app:cardCornerRadius="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
+        app:cardElevation="3sp"
+        app:cardMaxElevation="4sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 

@@ -31,7 +31,7 @@
     <string name="editor_giveup_confirm">Are you sure to dismiss all changes and quit editor?</string>
     <string name="editor_save_confirm">Save and quit ?</string>
     <string name="editor_delete_confirm">Delete this account and quit?</string>
-    <string name="chose_group">Chose group</string>
+    <string name="chose_group">&lt;Chose group&gt;</string>
     <string name="setup_custom_group">&lt;Custom&gt;</string>
     <string name="hint_input_groupname">Input group name</string>
 
