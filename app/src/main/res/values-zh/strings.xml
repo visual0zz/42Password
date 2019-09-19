@@ -17,7 +17,7 @@
     <string name="wrong_password">密码错误</string>
     <string name="cancel">取消</string>
     <string name="confirm">确定</string>
-    <string name="confirm_to_purge_database">你确定清除所有数据吗</string>
+    <string name="confirm_to_purge_database">由于没有中央服务器，无法提供密码找回，如果想不起主密码，只能清除本地所有数据，你确定清除所有数据吗</string>
     <string name="delete">删除</string>
     <string name="edit">编辑</string>
     <string name="editor_colomn_account">账户名:</string>
