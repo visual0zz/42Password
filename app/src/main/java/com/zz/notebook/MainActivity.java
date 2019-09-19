@@ -12,12 +12,16 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
+import androidx.core.os.CancellationSignal;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.zz.notebook.database.CipherProvider;
+import com.zz.notebook.finger.FingerPrint;
 import com.zz.notebook.ui.home.HomeFragment;
 import com.zz.notebook.ui.home.HomeViewModel;
 import com.zz.notebook.ui.home.SearchActionProvider;
@@ -29,11 +33,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import java.security.SignatureException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.crypto.Cipher;
+
+import static com.zz.notebook.database.ByteArrayUtils.bytesToHex;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -131,5 +141,49 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+
+    CancellationSignal cancellationSignal;
+    public void configFinger(){
+        ImageView finger=findViewById(R.id.login_finger);
+        if(FingerPrint.isFingerPrintAvailable()){
+            finger.setVisibility(View.VISIBLE);
+            FingerprintManagerCompat manager=FingerprintManagerCompat.from(this);
+            cancellationSignal=new CancellationSignal();
+            manager.authenticate(
+                    null
+                    ,0,cancellationSignal,new FingerprintManagerCompat.AuthenticationCallback(){
+
+                        @Override
+                        public void onAuthenticationError(int errMsgId, CharSequence errString) {
+                            super.onAuthenticationError(errMsgId, errString);
+                        }
+
+                        @Override
+                        public void onAuthenticationHelp(int helpMsgId, CharSequence helpString) {
+                            super.onAuthenticationHelp(helpMsgId, helpString);
+                        }
+
+                        @Override
+                        public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
+                            try {
+                                byte[] sign=result.getCryptoObject().getSignature().sign();
+                                BasicService.toast(bytesToHex(sign));
+                            } catch (SignatureException e) {
+                                e.printStackTrace();
+                            }
+                            super.onAuthenticationSucceeded(result);
+                        }
+
+                        @Override
+                        public void onAuthenticationFailed() {
+                            super.onAuthenticationFailed();
+                        }
+                    },null);
+
+        }else {
+            finger.setVisibility(View.GONE);
+        }
     }
 }

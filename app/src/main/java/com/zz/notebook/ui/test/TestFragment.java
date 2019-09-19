@@ -40,9 +40,7 @@ public class TestFragment extends Fragment {
     }
 
     void test(){
-        Intent intent = new Intent(getContext(),LoginActivity.class);
-        startActivity(intent);
-        getActivity().setVisible(false);
+        ((MainActivity)getActivity()).configFinger();
     }
     void test2(){
     }
