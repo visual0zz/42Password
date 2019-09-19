@@ -62,9 +62,7 @@ public class EditorActivity extends AppCompatActivity {
     private View.OnClickListener onCancel= view -> {
         if(!editing)finish();//如果是查看模式，没必要提醒，直接退出就好
         else MessageBox(getResources().getString(R.string.editor_giveup_confirm),(dialogInterface, i) -> {
-            editor.revert();
-            reReadData();
-            intoShow();
+            finish();
         },null);
     };
     private View.OnClickListener onSubmit= view -> {
@@ -82,6 +80,7 @@ public class EditorActivity extends AppCompatActivity {
     private View.OnClickListener onDelete= view -> {
         MessageBox(getResources().getString(R.string.editor_delete_confirm),(dialogInterface, i) -> {
             editor.delete();
+            editor.saveDatabaseToFile();
             finish();
         },null);
     };
