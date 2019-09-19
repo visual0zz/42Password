@@ -11,6 +11,8 @@ import static com.zz.notebook.database.CipherService.getRandomBytes;
 import static com.zz.notebook.database.CipherService.hash;
 import static com.zz.notebook.database.ByteArrayUtils.bytesToHex;
 import static com.zz.notebook.database.ByteArrayUtils.isEqual;
+import static com.zz.notebook.database.CipherService.main_key_hash_count;
+import static com.zz.notebook.database.CipherService.normal_key_hash_count;
 
 public class CipherServiceTest {
     @Test
@@ -51,10 +53,27 @@ public class CipherServiceTest {
         byte[] salt1= getRandomBytes();
         byte[] salt2= getRandomBytes();
 
-        byte[] hash1=hash(salt1,salt1);
-        byte[] hash2=hash(salt1,salt2);
-        byte[] hash3=hash(salt1,salt2);
+        byte[] hash1=hash(salt1,salt1,3);
+        byte[] hash2=hash(salt1,salt2,3);
+        byte[] hash3=hash(salt1,salt2,3);
+
         Assert.assertTrue(isEqual(hash2,hash3));
         Assert.assertFalse(isEqual(hash1,hash2));
+    }
+
+    @Test
+    public void testHashTime(){//测量加密的时间，以确定常量的值
+        long pre=System.currentTimeMillis();
+        CipherService.hash(getRandomBytes(),getRandomBytes(),main_key_hash_count);
+        long after=System.currentTimeMillis();
+        long between=after-pre;
+        System.out.println("主密钥加密时间为:"+between+"ms");
+
+        pre=System.currentTimeMillis();
+        CipherService.hash(getRandomBytes(),getRandomBytes(),normal_key_hash_count);
+        after=System.currentTimeMillis();
+        between=after-pre;
+        System.out.println("普通密钥加密时间为:"+between+"ms");
+
     }
 }

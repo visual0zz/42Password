@@ -58,9 +58,9 @@ public class CipherProvider {
             Cipher cipher= Cipher.getInstance(global_encrypt_algorithm);
             IvParameterSpec IV=getIvFromSeed(masterkey_hash);
             cipher.init(opmode,key,IV);
-            logger.info("seed="+bytesToHex(masterkey_hash));
-            logger.info("key="+bytesToHex(key.getEncoded()));
-            logger.info("iv="+bytesToHex(IV.getIV()));
+//            logger.info("seed="+bytesToHex(masterkey_hash));
+//            logger.info("key="+bytesToHex(key.getEncoded()));
+//            logger.info("iv="+bytesToHex(IV.getIV()));
             return cipher;
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | InvalidAlgorithmParameterException e) {
             e.printStackTrace();

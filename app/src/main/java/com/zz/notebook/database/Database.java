@@ -36,6 +36,7 @@ import static com.zz.notebook.database.CipherService.aes_key_length;
 import static com.zz.notebook.database.CipherService.getRandomBytes;
 import static com.zz.notebook.database.CipherService.hash;
 import static com.zz.notebook.database.CipherService.hash_length;
+import static com.zz.notebook.database.CipherService.main_key_hash_count;
 import static com.zz.notebook.database.CipherService.random_bytes_length;
 import static com.zz.notebook.database.ByteArrayUtils.bytesToHex;
 import static com.zz.notebook.database.ByteArrayUtils.bytesToUUID;
@@ -65,7 +66,7 @@ public class Database {
                 readDataFromFile(masterkey);
             else{
                 initNewDatabase(masterkey,true);
-                saveDataToFile(hash(salt,masterkey));
+                saveDataToFile(hash(salt,masterkey,main_key_hash_count));
             }
         } catch (NoSuchPaddingException | NoSuchAlgorithmException | ParserConfigurationException | TransformerException | IllegalBlockSizeException e) {
             e.printStackTrace();
@@ -107,7 +108,7 @@ public class Database {
         //logger.info("解密用的盐="+bytesToHex(salt));
         //logger.info("解密用的密钥="+bytesToHex(masterkey));
         //logger.info("解密用的哈希="+bytesToHex(hash(salt,masterkey)));
-        cipherProvider=new CipherProvider(hash(salt,masterkey),null);//解密之前不知道randomkey
+        cipherProvider=new CipherProvider(hash(salt,masterkey,main_key_hash_count),null);//解密之前不知道randomkey
         byte[]master_data=cipherProvider.getCipherMaster(Cipher.DECRYPT_MODE).doFinal(master);//解码文件头
         //logger.info("解密后master_data="+bytesToHex(master_data));//todo delete
         //{//进行master_data的切分 master_data= salt+randomkey+hash(masterkey)
@@ -128,7 +129,7 @@ public class Database {
 //        logger.info("salt="+bytesToHex(salt_inner));
 //        logger.info("randomkey="+bytesToHex(randomkey_inner));
 //        logger.info("hash_masterkey="+bytesToHex(hashmasterkey_inner));
-        if(!isEqual(salt_inner,salt)||!isEqual(hashmasterkey_inner,hash(salt,masterkey)))throw new WrongMasterPasswordException("密码错误，无法解密数据库");
+        if(!isEqual(salt_inner,salt)||!isEqual(hashmasterkey_inner,hash(salt,masterkey,main_key_hash_count)))throw new WrongMasterPasswordException("密码错误，无法解密数据库");
         cipherProvider=new CipherProvider(hashmasterkey_inner,randomkey_inner);
         ///////////////////////////////////////开始读取数据区///////////////////////////////////////////////////////
         data=new ArrayList<>();
@@ -219,7 +220,7 @@ public class Database {
     private void initNewDatabase(byte[] master_key,boolean withSample){
         salt= getRandomBytes();//用于隐藏密文统计规律的盐，防止攻击者判断两个密文是否使用了相同的密钥进行加密
         data=new ArrayList<>();
-        cipherProvider=new CipherProvider(hash(salt,master_key), getRandomBytes());
+        cipherProvider=new CipherProvider(hash(salt,master_key,main_key_hash_count), getRandomBytes());
         if(!withSample)return;
         AccountItem item=new AccountItem();
         item.setTitle("示例账户");
@@ -392,11 +393,11 @@ public class Database {
     }
     public void changePassword(byte[] newPassword){//更改数据库主密码
         salt=getRandomBytes();
-        cipherProvider=new CipherProvider(hash(salt,newPassword), getRandomBytes());
+        cipherProvider=new CipherProvider(hash(salt,newPassword,main_key_hash_count), getRandomBytes());
         saveToFile();
     }
     public boolean checkPassword(byte[] password){//验证数据库主密码是否正确
-        return isEqual(cipherProvider.masterkey_hash,hash(salt,password));
+        return isEqual(cipherProvider.masterkey_hash,hash(salt,password,main_key_hash_count));
     }
     public void mergeFrom(Database db){
         HashSet<UUID> uuids=getUUIDs();
