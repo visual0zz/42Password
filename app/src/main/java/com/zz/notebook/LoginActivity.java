@@ -12,16 +12,27 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat.AuthenticationCallback;
+import androidx.core.os.CancellationSignal;
 
+import com.zz.notebook.database.CipherProvider;
+import com.zz.notebook.database.CipherService;
 import com.zz.notebook.database.Database;
+import com.zz.notebook.finger.FingerPrint;
 import com.zz.notebook.ui.home.HomeViewModel;
 import com.zz.notebook.util.Bash;
 import com.zz.notebook.util.BasicService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.PrintStream;
+import java.security.SignatureException;
 
+import javax.crypto.Cipher;
+
+import static com.zz.notebook.database.ByteArrayUtils.bytesToHex;
 import static com.zz.notebook.database.ByteArrayUtils.isEqual;
 import static com.zz.notebook.util.BasicService.getDatabaseFilePath;
 
@@ -45,7 +56,16 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
     @Override
     public void onResume(){
+        //configFinger();
         super.onResume();
+    }
+    @Override
+    public void onPause(){
+        if(cancellationSignal!=null){
+            cancellationSignal.cancel();
+            cancellationSignal=null;
+        }
+        super.onPause();
     }
     @Override
     public void onClick(View view) {
@@ -140,5 +160,50 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             BasicService.toast("清除数据库成功");
         });
         builder.show();
+    }
+    CancellationSignal cancellationSignal;
+
+    private void configFinger(){
+        ImageView finger=findViewById(R.id.login_finger);
+        if(FingerPrint.isFingerPrintAvailable()){
+            finger.setVisibility(View.VISIBLE);
+            FingerprintManagerCompat manager=FingerprintManagerCompat.from(this);
+            cancellationSignal=new CancellationSignal();
+            manager.authenticate(
+                    new FingerprintManagerCompat.CryptoObject(
+                            new CipherProvider(null,"fasdfxzcvtqw".getBytes())
+                                    .getInnerCipher(Cipher.ENCRYPT_MODE))
+                    ,0,cancellationSignal,new AuthenticationCallback(){
+
+                        @Override
+                        public void onAuthenticationError(int errMsgId, CharSequence errString) {
+                            super.onAuthenticationError(errMsgId, errString);
+                        }
+
+                        @Override
+                        public void onAuthenticationHelp(int helpMsgId, CharSequence helpString) {
+                            super.onAuthenticationHelp(helpMsgId, helpString);
+                        }
+
+                        @Override
+                        public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
+                            try {
+                                byte[] sign=result.getCryptoObject().getSignature().sign();
+                                BasicService.toast(bytesToHex(sign));
+                            } catch (SignatureException e) {
+                                e.printStackTrace();
+                            }
+                            super.onAuthenticationSucceeded(result);
+                        }
+
+                        @Override
+                        public void onAuthenticationFailed() {
+                            super.onAuthenticationFailed();
+                        }
+                    },null);
+
+        }else {
+            finger.setVisibility(View.GONE);
+        }
     }
 }
