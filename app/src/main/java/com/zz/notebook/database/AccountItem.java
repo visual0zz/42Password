@@ -3,7 +3,6 @@ package com.zz.notebook.database;
 
 import androidx.annotation.NonNull;
 
-import com.zz.notebook.util.BasicService;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -12,9 +11,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.security.InvalidKeyException;
-import java.sql.Time;
-import java.text.DateFormat;
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -24,12 +20,14 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 
+import static com.zz.notebook.database.CipherConfig.global_serialVersionUID;
+
 /**
  * 为了适配keepass的csv输出格式 属性定义为:"Group","Title","Username","Password","URL","Notes"
  */
 public class AccountItem implements Serializable {//表示一条帐号记录
     private static final long serialVersionUID =
-            AccountItem.class.getCanonicalName().concat(BasicService.global_serialVersionUID).hashCode();
+            AccountItem.class.getCanonicalName().concat(global_serialVersionUID).hashCode();
     private UUID uid;
     private String group;
     private String title;

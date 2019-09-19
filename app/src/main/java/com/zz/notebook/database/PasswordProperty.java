@@ -2,7 +2,6 @@ package com.zz.notebook.database;
 
 import androidx.annotation.NonNull;
 
-import com.zz.notebook.util.BasicService;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,9 +14,11 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 
+import static com.zz.notebook.database.CipherConfig.global_serialVersionUID;
+
 public class PasswordProperty implements Serializable {//表示一个密码,平时也保持加密，仅仅在需要显示的时候解密一段时间
     private static final long serialVersionUID =
-            PasswordProperty.class.getCanonicalName().concat(BasicService.global_serialVersionUID).hashCode();
+            PasswordProperty.class.getCanonicalName().concat(global_serialVersionUID).hashCode();
     public PasswordProperty(){}
     public PasswordProperty(String plain,CipherProvider provider){
         set(plain,provider);

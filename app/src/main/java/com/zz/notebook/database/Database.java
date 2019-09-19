@@ -46,10 +46,10 @@ import static com.zz.notebook.database.ByteArrayUtils.uuidToBytes;
 
 public class Database {
     Logger logger=Logger.getLogger(Database.class.getName());
-    private File databaseFile;
+    public File databaseFile;
     private CipherProvider cipherProvider;
     private byte[] salt;
-    private List<AccountItem> data;
+    private List<AccountItem> data;//用于存储数据库主体数据
     /**
      * 读取或者新建数据库用于储存数据
      * @param xmlDatabaseFile 用于储存数据的数据库文件
@@ -104,12 +104,12 @@ public class Database {
         }
         salt=hexToBytes(salt_node.getTextContent());
         byte[] master=hexToBytes(master_node.getTextContent());
-        logger.info("解密用的盐="+bytesToHex(salt));
-        logger.info("解密用的密钥="+bytesToHex(masterkey));
-        logger.info("解密用的哈希="+bytesToHex(hash(salt,masterkey)));
+        //logger.info("解密用的盐="+bytesToHex(salt));
+        //logger.info("解密用的密钥="+bytesToHex(masterkey));
+        //logger.info("解密用的哈希="+bytesToHex(hash(salt,masterkey)));
         cipherProvider=new CipherProvider(hash(salt,masterkey),null);//解密之前不知道randomkey
         byte[]master_data=cipherProvider.getCipherMaster(Cipher.DECRYPT_MODE).doFinal(master);//解码文件头
-        logger.info("解密后master_data="+bytesToHex(master_data));//todo delete
+        //logger.info("解密后master_data="+bytesToHex(master_data));//todo delete
         //{//进行master_data的切分 master_data= salt+randomkey+hash(masterkey)
             byte[] salt_inner=new byte[aes_key_length];
             byte[] randomkey_inner=new byte[random_bytes_length];
@@ -124,10 +124,10 @@ public class Database {
                     hashmasterkey_inner[i-aes_key_length-random_bytes_length]=master_data[i];
             }
         //}
-        logger.info("解密后");//todo delete
-        logger.info("salt="+bytesToHex(salt_inner));
-        logger.info("randomkey="+bytesToHex(randomkey_inner));
-        logger.info("hash_masterkey="+bytesToHex(hashmasterkey_inner));
+//        logger.info("解密后");//todo delete
+//        logger.info("salt="+bytesToHex(salt_inner));
+//        logger.info("randomkey="+bytesToHex(randomkey_inner));
+//        logger.info("hash_masterkey="+bytesToHex(hashmasterkey_inner));
         if(!isEqual(salt_inner,salt)||!isEqual(hashmasterkey_inner,hash(salt,masterkey)))throw new WrongMasterPasswordException("密码错误，无法解密数据库");
         cipherProvider=new CipherProvider(hashmasterkey_inner,randomkey_inner);
         ///////////////////////////////////////开始读取数据区///////////////////////////////////////////////////////
@@ -178,13 +178,13 @@ public class Database {
         Element root_element=document.createElement("root");
         Element salt_element=document.createElement("salt");
         Element master_element=document.createElement("master");
-        logger.info("加密前");//todo delete
-        logger.info("salt="+bytesToHex(salt));
-        logger.info("randomkey="+bytesToHex(cipherProvider.randomkey));
-        logger.info("hash_masterkey="+bytesToHex(masterkey_hash));
+//        logger.info("加密前");//todo delete
+//        logger.info("salt="+bytesToHex(salt));
+//        logger.info("randomkey="+bytesToHex(cipherProvider.randomkey));
+//        logger.info("hash_masterkey="+bytesToHex(masterkey_hash));
         byte[] master_data=concat(concat(salt,cipherProvider.randomkey),masterkey_hash);
 
-        logger.info("加密前master_data="+bytesToHex(master_data));//todo delete
+//        logger.info("加密前master_data="+bytesToHex(master_data));//todo delete
         Cipher cipher=cipherProvider.getCipherMaster(Cipher.ENCRYPT_MODE);
         byte[] master=cipher.doFinal(master_data);
 
@@ -243,12 +243,12 @@ public class Database {
     }
 
     public int size(){return data.size();}
-    public List<UUID> getUUIDs(){
-        ArrayList<UUID> result=new ArrayList<>();
+    public HashSet<UUID> getUUIDs(){
+        HashSet<UUID> result=new HashSet<>();
         for(AccountItem item:data){
             result.add(item.getUid());
         }
-        return result;
+        return result ;
     }
     public AccountItem getAccountItem(UUID uuid){
         for(AccountItem item:data){
@@ -375,6 +375,7 @@ public class Database {
         }
         return result.toArray(new String[1]);
     }
+
     public void renameGroup(String oldName,String newName){
         for(AccountItem item:data){
             if(item.getGroup().equals(oldName))
@@ -396,5 +397,12 @@ public class Database {
     }
     public boolean checkPassword(byte[] password){//验证数据库主密码是否正确
         return isEqual(cipherProvider.masterkey_hash,hash(salt,password));
+    }
+    public void mergeFrom(Database db){
+        HashSet<UUID> uuids=getUUIDs();
+        for(AccountItem item:db.data){
+            if(!uuids.contains(item.getUid()))//把新UUID对应数据都加进来
+                this.data.add(item);
+        }
     }
 }

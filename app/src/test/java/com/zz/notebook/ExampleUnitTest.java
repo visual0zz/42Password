@@ -1,5 +1,6 @@
 package com.zz.notebook;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
@@ -9,7 +10,9 @@ import java.io.File;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.UUID;
 
 import javax.crypto.KeyGenerator;
 import javax.xml.parsers.DocumentBuilder;
@@ -38,12 +41,10 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void test() throws ParserConfigurationException, TransformerException, NoSuchAlgorithmException {
-        KeyGenerator kgen = KeyGenerator.getInstance("AES");
-        SecureRandom random=SecureRandom.getInstance("SHA1PRNG");
-        kgen.init(256, random);
-        Key key=kgen.generateKey();
-        System.out.println(key.getFormat());
-        System.out.println(key.getAlgorithm());
+    public void test()   {
+        UUID uuid=UUID.randomUUID();
+        HashSet<UUID> uuids=new HashSet<>();
+        uuids.add(uuid);
+        Assert.assertTrue(uuids.contains(new UUID(uuid.getMostSignificantBits(),uuid.getLeastSignificantBits())));
     }
 }

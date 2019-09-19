@@ -12,9 +12,9 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 
 import static com.zz.notebook.database.ByteArrayUtils.bytesToHex;
+import static com.zz.notebook.database.CipherConfig.global_encrypt_algorithm;
 import static com.zz.notebook.database.CipherService.aesKeyFromSeed;
 import static com.zz.notebook.database.CipherService.getIvFromSeed;
-import static com.zz.notebook.util.BasicService.global_encrypt_algorithm;
 import static com.zz.notebook.database.ByteArrayUtils.concat;
 import static com.zz.notebook.database.ByteArrayUtils.uuidToBytes;
 
