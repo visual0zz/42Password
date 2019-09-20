@@ -1,6 +1,7 @@
 package com.zz.notebook;
 
 import android.content.Intent;
+import android.hardware.biometrics.BiometricPrompt;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -21,6 +22,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 import com.zz.notebook.database.CipherProvider;
+import com.zz.notebook.database.CipherService;
 import com.zz.notebook.finger.FingerPrint;
 import com.zz.notebook.ui.home.HomeFragment;
 import com.zz.notebook.ui.home.HomeViewModel;
@@ -37,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import java.security.KeyPair;
 import java.security.SignatureException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -146,44 +149,22 @@ public class MainActivity extends AppCompatActivity {
 
     CancellationSignal cancellationSignal;
     public void configFinger(){
-        ImageView finger=findViewById(R.id.login_finger);
         if(FingerPrint.isFingerPrintAvailable()){
-            finger.setVisibility(View.VISIBLE);
+
             FingerprintManagerCompat manager=FingerprintManagerCompat.from(this);
             cancellationSignal=new CancellationSignal();
             manager.authenticate(
                     null
                     ,0,cancellationSignal,new FingerprintManagerCompat.AuthenticationCallback(){
-
-                        @Override
-                        public void onAuthenticationError(int errMsgId, CharSequence errString) {
-                            super.onAuthenticationError(errMsgId, errString);
-                        }
-
-                        @Override
-                        public void onAuthenticationHelp(int helpMsgId, CharSequence helpString) {
-                            super.onAuthenticationHelp(helpMsgId, helpString);
-                        }
-
                         @Override
                         public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
-                            try {
-                                byte[] sign=result.getCryptoObject().getSignature().sign();
-                                BasicService.toast(bytesToHex(sign));
-                            } catch (SignatureException e) {
-                                e.printStackTrace();
-                            }
-                            super.onAuthenticationSucceeded(result);
-                        }
 
-                        @Override
-                        public void onAuthenticationFailed() {
-                            super.onAuthenticationFailed();
+                                BasicService.toast("识别成功");
+
+                            super.onAuthenticationSucceeded(result);
                         }
                     },null);
 
-        }else {
-            finger.setVisibility(View.GONE);
         }
     }
 }
