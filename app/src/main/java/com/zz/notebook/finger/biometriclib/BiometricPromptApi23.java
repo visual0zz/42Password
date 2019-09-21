@@ -7,6 +7,10 @@ import android.os.Build;
 import android.os.CancellationSignal;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
 /**
  * Created by gaoyang on 2018/06/19.
  */
