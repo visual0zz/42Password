@@ -124,7 +124,7 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
             Log.i(TAG, "onAuthenticationSucceeded: ");
             mDialog.setState(BiometricPromptDialog.STATE_SUCCEED);
 
-            mManagerIdentifyCallback.onSucceeded();
+            mManagerIdentifyCallback.onSucceeded(result.getCryptoObject().getCipher());
 
         }
     }

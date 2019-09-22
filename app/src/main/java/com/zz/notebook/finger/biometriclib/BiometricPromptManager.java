@@ -3,11 +3,14 @@ package com.zz.notebook.finger.biometriclib;
 import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
+import android.hardware.biometrics.BiometricPrompt;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.CancellationSignal;
 
 import androidx.annotation.NonNull;
+
+import javax.crypto.Cipher;
 
 
 /**
@@ -22,7 +25,7 @@ public class BiometricPromptManager {
     public interface OnBiometricIdentifyCallback {
         void onUsePassword();
 
-        void onSucceeded();
+        void onSucceeded(Cipher cipher);
 
         void onFailed();
 

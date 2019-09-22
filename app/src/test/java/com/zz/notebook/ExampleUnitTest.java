@@ -1,5 +1,9 @@
 package com.zz.notebook;
 
+import com.zz.notebook.database.ByteArrayUtils;
+import com.zz.notebook.database.CipherService;
+import com.zz.notebook.util.BasicService;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -7,6 +11,7 @@ import org.w3c.dom.Document;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -14,7 +19,11 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.UUID;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -41,10 +50,11 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void test()   {
+    public void test() throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         UUID uuid=UUID.randomUUID();
         HashSet<UUID> uuids=new HashSet<>();
         uuids.add(uuid);
         Assert.assertTrue(uuids.contains(new UUID(uuid.getMostSignificantBits(),uuid.getLeastSignificantBits())));
+
     }
 }
