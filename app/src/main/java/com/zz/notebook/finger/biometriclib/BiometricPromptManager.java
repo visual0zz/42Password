@@ -22,16 +22,16 @@ public class BiometricPromptManager {
     private IBiometricPromptImpl mImpl;
     private Activity mActivity;
 
-    public interface OnBiometricIdentifyCallback {
-        void onUsePassword();
+    public static abstract class OnBiometricIdentifyCallback {
+        public void onUsePassword(){}
 
-        void onSucceeded(Cipher cipher);
+        public abstract void onSucceeded(Cipher cipher);
 
-        void onFailed();
+        public void onFailed(){}
 
-        void onError(int code, String reason);
+        public void onError(int code, String reason){}
 
-        void onCancel();
+        public void onCancel(){}
 
     }
 

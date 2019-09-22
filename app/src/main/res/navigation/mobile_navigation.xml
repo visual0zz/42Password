@@ -26,7 +26,7 @@
         android:id="@+id/nav_tools"
         android:name="com.zz.notebook.ui.tools.ToolsFragment"
         android:label="@string/menu_tools"
-        tools:layout="@layout/fragment_tools" />
+        tools:layout="@layout/fragment_config" />
 
     <fragment
         android:id="@+id/nav_share"

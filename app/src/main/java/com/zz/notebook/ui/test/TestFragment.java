@@ -15,6 +15,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.zz.notebook.LoginActivity;
 import com.zz.notebook.MainActivity;
 import com.zz.notebook.R;
+import com.zz.notebook.database.ByteArrayUtils;
+import com.zz.notebook.finger.biometriclib.BiometricPromptManager;
 import com.zz.notebook.util.BasicService;
 
 import java.io.FileInputStream;
@@ -23,6 +25,10 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 import java.util.logging.Logger;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 
 public class TestFragment extends Fragment {
     Logger logger= Logger.getLogger(TestFragment.class.getName());
@@ -40,7 +46,13 @@ public class TestFragment extends Fragment {
     }
 
     void test(){
-        ((MainActivity)getActivity()).configFinger();
+        BiometricPromptManager manager=new BiometricPromptManager(getActivity());
+        manager.authenticate(new BiometricPromptManager.OnBiometricIdentifyCallback() {
+            @Override
+            public void onSucceeded(Cipher cipher) {
+
+            }
+        });
     }
     void test2(){
     }

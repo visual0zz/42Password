@@ -20,7 +20,7 @@ import javax.crypto.KeyGenerator;
 @RequiresApi(Build.VERSION_CODES.M)
 public class CryptoObjectHelper {
     // This can be key name you want. Should be unique for the app.
-    static final String KEY_NAME = "com.nestia.android.uikit.biometric.CryptoObjectHelper";
+    static final String KEY_NAME = CryptoObjectHelper.class.getName();
 
     // We always use this keystore on Android.
     static final String KEYSTORE_NAME = "AndroidKeyStore";
@@ -48,7 +48,7 @@ public class CryptoObjectHelper {
         Key key = GetKey();
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         try {
-            cipher.init(Cipher.ENCRYPT_MODE | Cipher.DECRYPT_MODE, key);
+            cipher.init(Cipher.ENCRYPT_MODE, key);
         } catch (KeyPermanentlyInvalidatedException e) {
             _keystore.deleteEntry(KEY_NAME);
             if (retry) {
@@ -73,7 +73,7 @@ public class CryptoObjectHelper {
     void CreateKey() throws Exception {
         KeyGenerator keyGen = KeyGenerator.getInstance(KEY_ALGORITHM, KEYSTORE_NAME);
         KeyGenParameterSpec keyGenSpec =
-                new KeyGenParameterSpec.Builder(KEY_NAME, KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+                new KeyGenParameterSpec.Builder(KEY_NAME, KeyProperties.PURPOSE_ENCRYPT )
                         .setBlockModes(BLOCK_MODE)
                         .setEncryptionPaddings(ENCRYPTION_PADDING)
                         .setUserAuthenticationRequired(true)
