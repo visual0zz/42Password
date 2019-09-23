@@ -26,6 +26,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.5.0.201909110433-r'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit.archive:5.4.0.201906121030-r'
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
