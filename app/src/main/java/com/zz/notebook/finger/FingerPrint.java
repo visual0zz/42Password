@@ -15,7 +15,7 @@ public class FingerPrint {
     /**
      *
      * @param password 用户密码
-     * @return 执行成功与否 true表示成功
+     * @return 执行成功与否 true表示成功 false表示密码错误
      */
     public static boolean writPrintInfo(byte[] password){
         if(HomeViewModel.database.checkPassword(password)){
@@ -25,6 +25,11 @@ public class FingerPrint {
             return false;
         }
     }
+
+    /**
+     * 验证指纹并返回事先存储的密码
+     * @return
+     */
     public static byte[] authenticate(){
         return null;
     }
