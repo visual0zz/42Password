@@ -1,6 +1,7 @@
 package com.zz.notebook;
 
 import com.zz.notebook.database.ByteArrayUtils;
+import com.zz.notebook.database.CipherProvider;
 import com.zz.notebook.database.CipherService;
 import com.zz.notebook.util.BasicService;
 
@@ -36,6 +37,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import static com.zz.notebook.database.CipherService.hash;
 import static org.junit.Assert.*;
 
 /**
@@ -55,6 +57,8 @@ public class ExampleUnitTest {
         HashSet<UUID> uuids=new HashSet<>();
         uuids.add(uuid);
         Assert.assertTrue(uuids.contains(new UUID(uuid.getMostSignificantBits(),uuid.getLeastSignificantBits())));
-
+        byte[] data=new CipherProvider("1".getBytes(),"1".getBytes())
+                .getCipherMaster(Cipher.ENCRYPT_MODE).doFinal(hash("1".getBytes(),"1".getBytes(),3));
+        System.out.println(data.length);
     }
 }

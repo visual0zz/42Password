@@ -1,15 +1,21 @@
 package com.zz.notebook.finger.biometriclib;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.CancellationSignal;
 import android.util.Log;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+
+import com.zz.notebook.R;
+import com.zz.notebook.util.BasicService;
 
 /**
  * Created by gaoyang on 2018/06/19.
@@ -19,7 +25,7 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
 
     private static final String TAG = "BiometricPromptApi23";
     private Activity mActivity;
-    private BiometricPromptDialog mDialog;
+    private AlertDialog.Builder mDialog;
     private FingerprintManager mFingerprintManager;
     private CancellationSignal mCancellationSignal;
     private BiometricPromptManager.OnBiometricIdentifyCallback mManagerIdentifyCallback;
@@ -42,33 +48,12 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
          * 我实现了一个自定义dialog，
          * BiometricPromptDialog.OnBiometricPromptDialogActionCallback是自定义dialog的回调
          */
-        mDialog = BiometricPromptDialog.newInstance();
-        mDialog.setOnBiometricPromptDialogActionCallback(new BiometricPromptDialog.OnBiometricPromptDialogActionCallback() {
-            @Override
-            public void onDialogDismiss() {
-                //当dialog消失的时候，包括点击userPassword、点击cancel、和识别成功之后
-                if (mCancellationSignal != null && !mCancellationSignal.isCanceled()) {
-                    mCancellationSignal.cancel();
-                }
-            }
-
-            @Override
-            public void onUsePassword() {
-                //一些情况下，用户还可以选择使用密码
-                if (mManagerIdentifyCallback != null) {
-                    mManagerIdentifyCallback.onUsePassword();
-                }
-            }
-
-            @Override
-            public void onCancel() {
-                //点击cancel键
-                if (mManagerIdentifyCallback != null) {
-                    mManagerIdentifyCallback.onCancel();
-                }
-            }
-        });
-        mDialog.show(mActivity.getFragmentManager(), "BiometricPromptApi23");
+        mDialog = new AlertDialog.Builder(mActivity);
+        mDialog.setMessage("请按压指纹");
+        ImageView imageView=new ImageView(mActivity);
+        imageView.setImageDrawable(mActivity.getDrawable(R.drawable.icon_finger_print));
+        mDialog.setView(imageView);
+        mDialog.show();
 
         mCancellationSignal = cancel;
         if (mCancellationSignal == null) {
@@ -77,7 +62,6 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
         mCancellationSignal.setOnCancelListener(new CancellationSignal.OnCancelListener() {
             @Override
             public void onCancel() {
-                mDialog.dismiss();
             }
         });
 
@@ -97,7 +81,6 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
         public void onAuthenticationError(int errorCode, CharSequence errString) {
             super.onAuthenticationError(errorCode, errString);
             Log.d(TAG, "onAuthenticationError() called with: errorCode = [" + errorCode + "], errString = [" + errString + "]");
-            mDialog.setState(BiometricPromptDialog.STATE_ERROR);
             mManagerIdentifyCallback.onError(errorCode, errString.toString());
         }
 
@@ -105,7 +88,6 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
         public void onAuthenticationFailed() {
             super.onAuthenticationFailed();
             Log.d(TAG, "onAuthenticationFailed() called");
-            mDialog.setState(BiometricPromptDialog.STATE_FAILED);
             mManagerIdentifyCallback.onFailed();
         }
 
@@ -113,7 +95,7 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
         public void onAuthenticationHelp(int helpCode, CharSequence helpString) {
             super.onAuthenticationHelp(helpCode, helpString);
             Log.d(TAG, "onAuthenticationHelp() called with: helpCode = [" + helpCode + "], helpString = [" + helpString + "]");
-            mDialog.setState(BiometricPromptDialog.STATE_FAILED);
+
             mManagerIdentifyCallback.onFailed();
 
         }
@@ -122,8 +104,6 @@ public class BiometricPromptApi23 implements IBiometricPromptImpl {
         public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
             super.onAuthenticationSucceeded(result);
             Log.i(TAG, "onAuthenticationSucceeded: ");
-            mDialog.setState(BiometricPromptDialog.STATE_SUCCEED);
-
             mManagerIdentifyCallback.onSucceeded(result.getCryptoObject().getCipher());
 
         }

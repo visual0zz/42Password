@@ -13,15 +13,17 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import com.zz.notebook.database.Database;
+import com.zz.notebook.finger.FingerPrint;
 import com.zz.notebook.ui.home.HomeViewModel;
 import com.zz.notebook.util.Bash;
 import com.zz.notebook.util.BasicService;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.PrintStream;
+
 import static com.zz.notebook.database.ByteArrayUtils.isEqual;
+import static com.zz.notebook.database.CipherService.hash;
 import static com.zz.notebook.util.BasicService.getDatabaseFilePath;
+import static com.zz.notebook.util.BasicService.getFingerPath;
 
 public class LoginActivity extends Activity implements View.OnClickListener {
     ImageView avatar;
@@ -31,6 +33,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     TextView repeat_pass_view;
     LinearLayout repeat_frame;
     boolean login;
+
+    ImageView finger;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +47,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
     @Override
     public void onResume(){
+        if(new File(getFingerPath()).exists()){
+            fingerLogin.onClick(null);
+        }
         super.onResume();
     }
     @Override
@@ -60,6 +67,20 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 break;
         }
     }
+    View.OnClickListener fingerLogin = view -> {//指纹登陆
+        FingerPrint.authenticate(LoginActivity.this, password -> {
+            try {
+                HomeViewModel.database=new Database(new File(BasicService.getDatabaseFilePath()),password);
+            } catch (Database.WrongMasterPasswordException |Database.DatabaseException e) {
+                e.printStackTrace();
+                BasicService.toast(getResources().getString(R.string.figer_faile));
+                return;
+            }
+            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            startActivity(intent);
+            LoginActivity.this.setVisible(false);
+        });
+    };
     private void setupUI(){//配置UI界面
         avatar=findViewById(R.id.login_avatar);
         login_button=findViewById(R.id.login_button);
@@ -67,10 +88,22 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         purge_button=findViewById(R.id.login_purgedata_action);
         repeat_pass_view=findViewById(R.id.login_password_repeat);
         repeat_frame=findViewById(R.id.repeat_frame);//重复密码框的外框
+        finger=findViewById(R.id.icon_finger);
         login_button.setOnClickListener(this);
         purge_button.setOnClickListener(this);
         avatar.setImageDrawable(getApplicationContext().getResources().getDrawable(R.drawable.big_ic_laucher));
         update();
+
+
+
+        if(new File(getFingerPath()).exists()){
+            finger.setVisibility(View.VISIBLE);
+        }
+        else {
+            finger.setVisibility(View.INVISIBLE);//todo invisible
+        }
+        finger.setImageDrawable(getResources().getDrawable(R.drawable.icon_finger_print));
+        finger.setOnClickListener(fingerLogin);
     }
 
     private void update(){//根据当前状态更新UI界面
@@ -91,26 +124,17 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
     private void loginOrRegist(){
         CharSequence sequence=password_view.getText();
-        ByteArrayOutputStream stream=new ByteArrayOutputStream();
-        PrintStream printStream=new PrintStream(stream);
-        for(int i=0;i<sequence.length();i++){
-            printStream.print(sequence.charAt(i));
-        }
         if(!login){//如果是注册，需要验证两次密码输入是否一致
             CharSequence sequence2=repeat_pass_view.getText();
-            ByteArrayOutputStream stream2=new ByteArrayOutputStream();
-            PrintStream printStream2=new PrintStream(stream2);
-            for(int i=0;i<sequence2.length();i++){
-                printStream2.print(sequence2.charAt(i));
-            }
-            if(!isEqual(stream.toByteArray(),stream2.toByteArray()))
+            if(!isEqual(sequence.toString().getBytes(),sequence2.toString().getBytes()))
             {
                 BasicService.toast("密码不一致");
                 return;
             }
         }
         try {
-            HomeViewModel.database=new Database(new File(BasicService.getDatabaseFilePath()),stream.toByteArray());
+            byte[] pass=sequence.toString().getBytes();
+            HomeViewModel.database=new Database(new File(BasicService.getDatabaseFilePath()),hash(pass,pass,3));
         } catch (Database.DatabaseException e) {
             e.printStackTrace();
             BasicService.toast("数据库错误，无法登录或注册");
@@ -134,6 +158,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         builder.setPositiveButton(R.string.confirm, (dialogInterface, i) -> {
             try {
                 Bash.rmRd(new File(getDatabaseFilePath()));
+                Bash.rmRd(new File(getFingerPath()));
             } catch (Exception e) {
                 e.printStackTrace();
                 BasicService.toast("清除数据库失败");

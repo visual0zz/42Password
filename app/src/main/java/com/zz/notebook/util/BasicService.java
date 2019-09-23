@@ -24,6 +24,9 @@ public final class BasicService {
     public static String getDatabaseFilePath(){
         return rootContext.getFilesDir().getPath()+database_file_storage_path;
     }
+    public static String getFingerPath(){
+        return rootContext.getFilesDir().getPath()+"/data/finger";
+    }
     public static void toast(String str){
         try{
             if(isWorkable()){

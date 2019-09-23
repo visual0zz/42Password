@@ -36,14 +36,10 @@
     <string name="setup_custom_group">&lt;自定义&gt;</string>
     <string name="hint_input_groupname">请输入分组名</string>
 
-    <string name="biometric_dialog_cancel">Cancel</string>
     <string name="biometric_dialog_title">Verification</string>
     <string name="biometric_dialog_subtitle">Verify fingerprint to continue</string>
-    <string name="biometric_dialog_state_normal">Fingerprint sensor</string>
-    <string name="biometric_dialog_state_failed">Failed to identify, please try again</string>
-    <string name="biometric_dialog_state_error">Verification error, please enter payment password</string>
-    <string name="biometric_dialog_state_error_enable_process">Verification error, setup failed</string>
-    <string name="biometric_dialog_state_succeeded">Verification successful</string>
     <string name="biometric_dialog_use_password">Use Password</string>
+    <string name="switch_finger_unlock">指纹解锁</string>
+    <string name="figer_faile">指纹验证失败</string>
 
 </resources>

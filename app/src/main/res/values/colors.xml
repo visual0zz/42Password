@@ -10,8 +10,4 @@
     <color name="text_secondary_color">#9D9D9D</color>
     <color name="account_input_bg_color">#FFFFFF</color>
 
-    <color name="bg_biometric_prompt_dialog">#00000000</color>
-    <color name="text_red">#FF0000</color>
-    <color name="text_green">#00FF00</color>
-    <color name="text_quaternary">#bbbbbb</color>
 </resources>

@@ -109,7 +109,6 @@
             tools:targetApi="lollipop" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -128,11 +127,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
-            android:id="@+id/login_finger"
+            android:id="@+id/icon_finger"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentDescription="@string/app_name"
-            app:srcCompat="@drawable/icon_finger_print" />
+            android:visibility="visible"
+            app:srcCompat="@drawable/icon_finger_print"
+            tools:visibility="visible" />
 
     </LinearLayout>
 
