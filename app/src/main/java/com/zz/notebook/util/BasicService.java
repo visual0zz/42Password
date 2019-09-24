@@ -27,6 +27,15 @@ public final class BasicService {
     public static String getFingerPath(){
         return rootContext.getFilesDir().getPath()+"/data/finger";
     }
+    public static String getGitpath(){
+        return rootContext.getFilesDir().getPath()+"/data/repository";
+    }
+    public static String getRemoteAddressFilePath(){
+        return rootContext.getFilesDir().getPath()+"/data/remote_address";
+    }
+    public static String getTmpDatabaseFilePath(){
+        return rootContext.getFilesDir().getPath()+"/data/tmp_database.xml";
+    }
     public static void toast(String str){
         try{
             if(isWorkable()){
