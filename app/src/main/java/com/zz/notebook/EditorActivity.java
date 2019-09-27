@@ -196,6 +196,7 @@ public class EditorActivity extends AppCompatActivity {
         Menu menu=popupMenu.getMenu();
         String[] groups=editor.getGroups();//获得所有分组
         menu.add(R.string.setup_custom_group);
+        menu.add("<git>");
         for(String group:groups){
             menu.add(group);
         }
