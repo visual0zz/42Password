@@ -1,11 +1,13 @@
 package com.zz.notebook.ui.config;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -14,14 +16,14 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.zz.notebook.GitPullActivity;
+import com.zz.notebook.GitPushActivity;
 import com.zz.notebook.R;
-import com.zz.notebook.database.CipherService;
 import com.zz.notebook.finger.FingerPrint;
 import com.zz.notebook.util.Bash;
 import com.zz.notebook.util.BasicService;
 
 import java.io.File;
-import java.nio.file.AccessDeniedException;
 
 import static com.zz.notebook.database.CipherService.hash;
 import static java.lang.System.exit;
@@ -29,6 +31,8 @@ import static java.lang.System.exit;
 public class ConfigFragment extends Fragment {
 
     private ConfigViewModel configViewModel;
+    Button pullButton;
+    Button pushButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +64,16 @@ public class ConfigFragment extends Fragment {
                     exit(1);
                 }
             }
+        });
+        pullButton=root.findViewById(R.id.button_import_database);
+        pushButton=root.findViewById(R.id.button_export_database);
+        pullButton.setOnClickListener(view -> {
+            Intent intent=new Intent(view.getContext(), GitPullActivity.class);
+            startActivity(intent);
+        });
+        pushButton.setOnClickListener(view -> {
+            Intent intent=new Intent(view.getContext(), GitPushActivity.class);
+            startActivity(intent);
         });
         return root;
     }
