@@ -13,5 +13,6 @@ public class GitPullActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_git_pull);
+        setTitle(R.string.config_import_database);
     }
 }

@@ -10,5 +10,6 @@ public class GitPushActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_git_push);
+        setTitle(R.string.config_export_database);
     }
 }
