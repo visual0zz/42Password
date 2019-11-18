@@ -369,6 +369,7 @@ public class Database {
     }
     public String[] getGroups(){//得到数据库中所有的组名
         HashSet<String> result=new HashSet<>();
+        result.add("<git>");
         for(AccountItem item:data){
             if(item.getGroup()!=null && !item.getGroup().equals("")){
                 result.add(item.getGroup());
@@ -405,5 +406,14 @@ public class Database {
             if(!uuids.contains(item.getUid()))//把新UUID对应数据都加进来
                 this.data.add(item);
         }
+    }
+
+    public List<AccountItem> getAccountsInGroup(String groupName){
+        ArrayList<AccountItem> result=new ArrayList<>();
+        for(AccountItem item:data){
+            if(item.getGroup().equals(groupName))
+                result.add(item);
+        }
+        return result;
     }
 }

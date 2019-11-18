@@ -25,6 +25,7 @@
         </activity>
         <activity android:name=".EditorActivity" android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity android:name=".GitPullActivity" />
+        <activity android:name=".GitPushActivity" />
     </application>
 
 </manifest>
