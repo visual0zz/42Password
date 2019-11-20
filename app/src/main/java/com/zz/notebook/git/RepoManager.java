@@ -12,7 +12,7 @@ public class RepoManager {
     }
 
     public void clone(String remote){
-        
+
     }
 
     public void init(){
