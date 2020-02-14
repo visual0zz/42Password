@@ -65,8 +65,8 @@ public class ConfigFragment extends Fragment {
                 }
             }
         });
-        pullButton=root.findViewById(R.id.button_import_database);
-        pushButton=root.findViewById(R.id.button_export_database);
+        pullButton=root.findViewById(R.id.button_pull_database);
+        pushButton=root.findViewById(R.id.button_upload_database);
         pullButton.setOnClickListener(view -> {
             Intent intent=new Intent(view.getContext(), GitPullActivity.class);
             startActivity(intent);

@@ -41,7 +41,9 @@
     <string name="biometric_dialog_use_password">Use Password</string>
     <string name="switch_finger_unlock">指纹解锁</string>
     <string name="figer_faile">指纹验证失败</string>
-    <string name="config_export_database">上传数据</string>
-    <string name="config_import_database">拉取数据</string>
+    <string name="config_export_database">导出数据</string>
+    <string name="config_import_database">导入数据</string>
+    <string name="config_download_database">拉取数据</string>
+    <string name="config_upload_database">上传数据</string>
 
 </resources>
